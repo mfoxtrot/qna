@@ -3,9 +3,7 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
-    before do
-      get :index
-    end
+    before { get :index }
 
     it 'pupulates an array of all questions' do
       expect(assigns(:questions)).to match_array(questions)
@@ -18,9 +16,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'GET #show' do
     let(:question) { create(:question) }
-    before do
-      get :show, params: { id: question }
-    end
+    before { get :show, params: { id: question } }
 
     it 'assigns object to @question variable' do
       expect(assigns(:question)).to eq question
@@ -28,6 +24,19 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'renders show view' do
       expect(response).to render_template :show
+    end
+  end
+
+  describe 'GET #new' do
+    let(:question) { create(:question) }
+    before { get :new }
+
+    it 'assigns a new Question to @question variable' do
+      expect(assigns(:question)).to be_a_new(Question)
+    end
+
+    it 'renders new view' do
+      expect(response).to render_template :new
     end
   end
 end
