@@ -28,7 +28,6 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
-    let(:question) { create(:question) }
     before { get :new }
 
     it 'assigns a new Question to @question variable' do
