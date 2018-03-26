@@ -19,7 +19,7 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'GET #show' do
     let(:question) { create(:question) }
     before do
-      get :show
+      get :show, params: { id: question }
     end
 
     it 'assigns object to @question variable' do
