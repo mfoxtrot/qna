@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  describe 'GET #new' do
-    let(:question) { create(:question) }
+  let(:question) { create(:question) }
 
+  describe 'GET #new' do
     before { get :new, params: { question_id: question.id } }
 
     it 'assigns a new Answer to @answer variable' do
@@ -20,12 +20,9 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
-
     context 'with valid attributes' do
-      let(:question) { create(:question) }
-      let(:action) do
-        post :create, params: { question_id: question.id, answer: attributes_for(:answer)}
-      end
+      let(:action) { post :create, params: { question_id: question.id, answer: attributes_for(:answer)} }
+
       it 'saves the new answer' do
         expect { action }.to change(question.answers, :count).by(1)
       end
@@ -36,10 +33,8 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      let(:question) { create(:question) }
-      let(:action) do
-        post :create, params: { question_id: question.id, answer: attributes_for(:invalid_answer)}
-      end
+      let(:action) { post :create, params: { question_id: question.id, answer: attributes_for(:invalid_answer)} }
+
       it 'does not save the new answer' do
         expect { action }.to_not change(Answer, :count)
       end
