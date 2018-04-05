@@ -10,7 +10,7 @@ feature 'User creates a question', %q{
     fill_in 'Body', with: 'Lorem ipsum dolor sit amet'
     click_on 'Create a question'
 
-    expect(page).to have_content 'The question created successfully'
+    expect(page).to have_content 'The question was created successfully'
 
   end
 end
