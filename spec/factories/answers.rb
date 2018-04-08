@@ -8,4 +8,9 @@ FactoryBot.define do
     body nil
     association :question, factory: :question
   end
+
+  factory :answer_for_question, class: Answer do
+    body Faker::Lorem.unique.sentence
+    question
+  end
 end
