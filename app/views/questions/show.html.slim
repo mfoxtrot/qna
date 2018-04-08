@@ -1,5 +1,7 @@
 h2 #{ @question.title}
 p #{ @question.body }
+ol
+  = render partial: './answers/answer', collection: @question.answers
 br
 = form_with(model: [@question, @answer], local: true) do |f|
   = f.label :body
