@@ -36,6 +36,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'slim-rails'
 
 gem 'rails-controller-testing'
+gem 'devise'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -46,6 +47,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
   gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
+  gem 'launchy'
 end
 
 group :development do
