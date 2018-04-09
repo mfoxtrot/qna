@@ -8,12 +8,12 @@ feature 'Logged in user can sign out', %w{
   scenario 'Logged in user can sign out' do
     user = create(:user)
     visit new_user_session_path
-    fill_in 'Email', with: 'user@test.com'
-    fill_in 'Password', with: '12345678'
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: user.password
     click_on 'Log in'
 
     click_on 'Log out'
-    expect(current_path).to eq new_user_session_path
+    expect(current_path).to eq root_path
     expect(page).to have_content 'Signed out successfully.'
 
   end

@@ -9,9 +9,16 @@
   </head>
 
   <body>
-    <%= render 'flash' %>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    <%= yield %>
+    <nav>
+      <% if user_signed_in? %>
+        <%= link_to 'Log out', destroy_user_session_path, method: :delete %>
+      <% end %>
+    </nav>
+    <main>
+      <%= render 'flash' %>
+      <p class="notice"><%= notice %></p>
+      <p class="alert"><%= alert %></p>
+      <%= yield %>
+    </main>
   </body>
 </html>
