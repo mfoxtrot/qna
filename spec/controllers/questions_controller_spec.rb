@@ -63,4 +63,33 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    let(:question) { create(:question) }
+    let(:action) { delete :destroy, id: question }
+
+    context 'if question belongs to the user' do
+
+      it 'deletes question' do
+        sign_in_as_user(question.user)
+        expect { :action }.to change(Question, :count).by(-1)
+      end
+
+      it 'redirects to questions index' do
+        sign_in_as_user(question.user)
+        action
+        expect(response).to redirect_to questions_path
+      end
+    end
+
+    context 'if question does not belong to the user' do
+      let(:user) { create(:user) }
+
+      it 'does not delete question' do
+        sign_in(user)
+        expect { :action }.to_not change(Question, :count)
+      end
+    end
+
+  end
 end

@@ -46,4 +46,33 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    let(:answer) { create(:answer) }
+    let(:action) { delete :destroy, id: answer }
+
+    context 'if answer belongs to the user' do
+
+      it 'deletes answer' do
+        sign_in_as_user(answer.user)
+        expect { :action }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirects to question show' do
+        sign_in_as_user(answer.user)
+        action
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+
+    context 'if answer does not belong to the user' do
+      let(:user) { create(:user) }
+
+      it 'does not delete answer' do
+        sign_in(user)
+        expect { :action }.to_not change(Answer, :count)
+      end
+    end
+
+  end
 end
