@@ -17,7 +17,7 @@ feature 'Only authenticated user can add a question', %q{
     fill_in 'Body', with: 'Bla-bla'
     click_on 'Create'
 
-    expect(page).to have_content 'Your question created successfully.'
+    expect(page).to have_content 'The question was created successfully'
 
   end
 
