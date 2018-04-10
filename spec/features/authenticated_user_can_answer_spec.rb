@@ -16,10 +16,10 @@ feature 'Authenticated user can answer a question', %q{
     click_on 'Log in'
 
     visit question_path(question)
-    fill_in 'Body', with: answer
+    fill_in 'answer[body]', with: answer
     click_on 'Post an answer'
 
-    expect(page).to have_content 'Your answer was posted successfully'
+    expect(page).to have_content 'New answer was added'
     expect(page).to have_content answer
   end
 
@@ -28,7 +28,7 @@ feature 'Authenticated user can answer a question', %q{
     answer = Faker::Lorem.unique.sentence
 
     visit question_path(question)
-    fill_in 'Body', with: answer
+    fill_in 'answer[body]', with: answer
     click_on 'Post an answer'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
