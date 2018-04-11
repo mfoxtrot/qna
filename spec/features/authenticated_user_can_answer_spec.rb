@@ -5,13 +5,16 @@ feature 'Authenticated user can answer a question', %q{
   a question
 } do
 
+  background do
+    @question = create(:question)
+  end
+
   scenario 'Authenticated user can answer a question' do
     sign_in_user
 
-    question = create(:question)
     answer = create(:answer)
 
-    visit question_path(question)
+    visit question_path(@question)
     fill_in 'answer[body]', with: answer
     click_on 'Post an answer'
 
@@ -20,10 +23,9 @@ feature 'Authenticated user can answer a question', %q{
   end
 
   scenario 'Non-authenticated user can not answer a question' do
-    question = create(:question)
     answer = Faker::Lorem.unique.sentence
 
-    visit question_path(question)
+    visit question_path(@question)
     fill_in 'answer[body]', with: answer
     click_on 'Post an answer'
 

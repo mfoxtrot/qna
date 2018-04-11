@@ -1,10 +1,13 @@
 require 'rails_helper'
 
 feature 'User can delete his question or answer' do
-  scenario 'User can delete his question' do
+  background do
     sign_in_user
+    @user1 = create(:user)
+  end
 
-    question = @user.questions.create(title: 'New question', body: 'Question body')
+  scenario 'User can delete his question' do
+    question = create(:question, author: @user)
 
     visit question_path(question)
     click_on 'Delete question'
@@ -14,10 +17,7 @@ feature 'User can delete his question or answer' do
   end
 
   scenario 'User can not delete another''s question' do
-    sign_in_user
-
-    user1 = create(:user)
-    question = user1.questions.create(title: 'New question', body: 'Question body')
+    question = create(:question, author: @user1)
 
     visit question_path(question)
 
@@ -25,11 +25,8 @@ feature 'User can delete his question or answer' do
   end
 
   scenario 'User can delete his answer' do
-    sign_in_user
-
-    user1 = create(:user)
-    question = user1.questions.create(title: 'New question', body: 'Question body')
-    answer = question.answers.create(author: @user, body: 'My answer')    
+    question = create(:question, author: @user1)
+    answer = create(:answer, question: question, author: @user)
 
     visit question_path(question)
 
@@ -40,11 +37,8 @@ feature 'User can delete his question or answer' do
   end
 
   scenario 'User can not delete another''s answer' do
-    user1 = create(:user)
-    question = user1.questions.create(title: 'New question', body: 'Question body')
-    answer = question.answers.create(author: user1, body: 'My answer')
-
-    sign_in_user
+    question = create(:question, author: @user1)
+    answer = create(:answer, question: question, author: @user1)
 
     visit question_path(question)
 

@@ -8,8 +8,8 @@ feature 'Only authenticated user can add a question', %q{
 
     visit questions_path
     click_on 'Ask a question'
-    fill_in 'Title', with: 'Bla'
-    fill_in 'Body', with: 'Bla-bla'
+    fill_in 'Title', with: Faker::Lorem.unique.sentence
+    fill_in 'Body', with: Faker::Lorem.unique.paragraph
     click_on 'Create'
 
     expect(page).to have_content 'The question was created successfully'
