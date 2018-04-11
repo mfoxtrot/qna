@@ -4,13 +4,7 @@ feature 'User creates a question', %q{
   Any User is able to create a question
 } do
   scenario 'User try to create a question' do
-
-    User.create!(email: 'user@test.com', password: '12345678')
-
-    visit new_user_session_path
-    fill_in 'Email', with: 'user@test.com'
-    fill_in 'Password', with: '12345678'
-    click_on 'Log in'
+    sign_in_user
 
     visit new_question_path
     fill_in 'Title', with: 'Title of the new question'

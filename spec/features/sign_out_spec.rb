@@ -6,11 +6,7 @@ feature 'Logged in user can sign out', %q{
 } do
 
   scenario 'Logged in user can sign out' do
-    user = create(:user)
-    visit new_user_session_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    click_on 'Log in'
+    sign_in_user
 
     click_on 'Log out'
     expect(current_path).to eq root_path

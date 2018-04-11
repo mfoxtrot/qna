@@ -4,12 +4,7 @@ feature 'Only authenticated user can add a question', %q{
   User should be authenticated to ask a question
 } do
   scenario 'Authenticated user is able to create a question' do
-    user = User.create!(email: 'user@test.com', password: '123456')
-
-    visit new_user_session_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    click_on 'Log in'
+    sign_in_user
 
     visit questions_path
     click_on 'Ask a question'

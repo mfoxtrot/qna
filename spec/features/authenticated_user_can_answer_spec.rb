@@ -6,14 +6,10 @@ feature 'Authenticated user can answer a question', %q{
 } do
 
   scenario 'Authenticated user can answer a question' do
-    user = create(:user)
+    sign_in_user
+
     question = create(:question)
     answer = create(:answer)
-
-    visit new_user_session_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    click_on 'Log in'
 
     visit question_path(question)
     fill_in 'answer[body]', with: answer

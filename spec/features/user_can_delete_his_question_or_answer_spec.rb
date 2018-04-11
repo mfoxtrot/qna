@@ -2,13 +2,9 @@ require 'rails_helper'
 
 feature 'User can delete his question or answer' do
   scenario 'User can delete his question' do
-    user = create(:user)
-    question = user.questions.create(title: 'New question', body: 'Question body')
+    sign_in_user
 
-    visit new_user_session_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    click_on 'Log in'
+    question = @user.questions.create(title: 'New question', body: 'Question body')
 
     visit question_path(question)
     click_on 'Delete question'
@@ -18,15 +14,10 @@ feature 'User can delete his question or answer' do
   end
 
   scenario 'User can not delete another''s question' do
+    sign_in_user
+
     user1 = create(:user)
     question = user1.questions.create(title: 'New question', body: 'Question body')
-
-    user = create(:user)
-
-    visit new_user_session_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    click_on 'Log in'
 
     visit question_path(question)
 
@@ -34,17 +25,11 @@ feature 'User can delete his question or answer' do
   end
 
   scenario 'User can delete his answer' do
+    sign_in_user
+
     user1 = create(:user)
     question = user1.questions.create(title: 'New question', body: 'Question body')
-
-    user = create(:user)
-    answer = question.answers.create(author: user, body: 'My answer')
-
-
-    visit new_user_session_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    click_on 'Log in'
+    answer = question.answers.create(author: @user, body: 'My answer')    
 
     visit question_path(question)
 
@@ -58,12 +43,8 @@ feature 'User can delete his question or answer' do
     user1 = create(:user)
     question = user1.questions.create(title: 'New question', body: 'Question body')
     answer = question.answers.create(author: user1, body: 'My answer')
-    user = create(:user)
 
-    visit new_user_session_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    click_on 'Log in'
+    sign_in_user
 
     visit question_path(question)
 
