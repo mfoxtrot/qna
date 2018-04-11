@@ -1,3 +1,5 @@
 li
-  = answer.body
-  br
+  = item.body
+  - if item.persisted?
+    - if item.author == current_user && current_user
+      = link_to 'Delete', answer_path(item), method: :delete

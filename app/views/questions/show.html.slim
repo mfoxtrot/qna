@@ -1,7 +1,10 @@
-h2 #{ @question.title}
+p #{ @question.title}
+- if @question.author == current_user
+  = link_to 'Delete question', question_path(@question), method: :delete
+
 p #{ @question.body }
 ol
-  = render partial: './answers/answer', collection: @question.answers
+  = render partial: './answers/answer', collection: @question.answers, as: :item
 br
 = form_with(model: [@question, @answer], local: true) do |f|
   = f.label :body

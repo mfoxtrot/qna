@@ -38,7 +38,7 @@ feature 'User can delete his question or answer' do
     question = user1.questions.create(title: 'New question', body: 'Question body')
 
     user = create(:user)
-    answer = question.answers.create(user: user, body: 'My answer')
+    answer = question.answers.create(author: user, body: 'My answer')
 
 
     visit new_user_session_path
@@ -57,7 +57,7 @@ feature 'User can delete his question or answer' do
   scenario 'User can not delete another''s answer' do
     user1 = create(:user)
     question = user1.questions.create(title: 'New question', body: 'Question body')
-    answer = question.answers.create(user: user1, body: 'My answer')
+    answer = question.answers.create(author: user1, body: 'My answer')
     user = create(:user)
 
     visit new_user_session_path

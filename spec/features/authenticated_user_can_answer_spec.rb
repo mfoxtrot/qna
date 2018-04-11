@@ -6,9 +6,9 @@ feature 'Authenticated user can answer a question', %q{
 } do
 
   scenario 'Authenticated user can answer a question' do
-    user = User.create!(email: 'user@test.com', password: '123456')
-    question = Question.create!(title: 'Some title', body: 'Question body')
-    answer = Faker::Lorem.unique.sentence
+    user = create(:user)
+    question = create(:question)
+    answer = create(:answer)
 
     visit new_user_session_path
     fill_in 'Email', with: user.email
@@ -24,7 +24,7 @@ feature 'Authenticated user can answer a question', %q{
   end
 
   scenario 'Non-authenticated user can not answer a question' do
-    question = Question.create!(title: 'Some title', body: 'Question body')
+    question = create(:question)
     answer = Faker::Lorem.unique.sentence
 
     visit question_path(question)
