@@ -2,10 +2,6 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question, only: [:new, :create]
 
-  def new
-    @answer = @question.answers.new
-  end
-
   def create
     @answer = @question.answers.create(answer_params)
     @answer.author = current_user
@@ -13,17 +9,19 @@ class AnswersController < ApplicationController
       flash[:notice] = 'New answer was added'
       redirect_to question_path(@question)
     else
-      render :new
+      render 'questions/show'
     end
   end
 
   def destroy
     @answer = Answer.find(params[:id])
-    if @answer.author == current_user
+    if current_user.author_of?(@answer)
       @answer.destroy
       flash[:notice] = 'Answer was successfully deleted'
-      redirect_to question_path(@answer.question)
+    else
+      flash[:error] = 'Cannot delete the answer'
     end
+    redirect_to question_path(@answer.question)
   end
 
   private

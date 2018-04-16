@@ -3,23 +3,6 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
 
-  describe 'GET #new' do
-    sign_in_user
-    before { get :new, params: { question_id: question.id } }
-
-    it 'assigns a new Answer to @answer variable' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-
-    it 'should be a nested resource to question' do
-      expect(assigns(:answer).question).to eq question
-    end
-
-    it 'renders new view' do
-      expect(response).to render_template :new
-    end
-  end
-
   describe 'POST #create' do
     sign_in_user
     context 'with valid attributes' do
@@ -32,6 +15,9 @@ RSpec.describe AnswersController, type: :controller do
         action
         expect(response).to redirect_to question_path(question)
       end
+      it 'adds new answer to current_user''s collection' do
+        expect { action }.to change(@user.answers, :count).by(1)
+      end
     end
 
     context 'with invalid attributes' do
@@ -42,7 +28,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 're-renders new view' do
         action
-        expect(response).to render_template :new
+        expect(response).to render_template 'questions/show'
       end
     end
   end
@@ -72,6 +58,7 @@ RSpec.describe AnswersController, type: :controller do
         answer
         sign_in(user)
         expect { delete :destroy, params: {id: answer} }.to_not change(Answer, :count)
+        expect(response).to redirect_to question_path(answer.question)
       end
     end
 

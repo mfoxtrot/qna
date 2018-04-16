@@ -50,6 +50,9 @@ RSpec.describe QuestionsController, type: :controller do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to question_path(assigns(:question))
       end
+      it 'adds new question to current_user''s collection' do
+        expect { post :create, params: { question: attributes_for(:question)} }.to change(@user.questions, :count).by(1)
+      end
     end
 
     context 'with invalid attributes' do
@@ -88,6 +91,7 @@ RSpec.describe QuestionsController, type: :controller do
         question
         sign_in(user)
         expect { delete :destroy, params: {id: question} }.to_not change(Question, :count)
+        expect(response).to redirect_to question_path(question)
       end
     end
 

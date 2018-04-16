@@ -1,12 +1,13 @@
-p #{ @question.title}
-- if @question.author == current_user
+p= @question.title
+- if user_signed_in? && current_user.author_of?(@question)
   = link_to 'Delete question', question_path(@question), method: :delete
 
-p #{ @question.body }
+p= @question.body
 ol
-  = render partial: './answers/answer', collection: @question.answers, as: :item
+  = render @question.answers
 br
 = form_with(model: [@question, @answer], local: true) do |f|
+  = render 'shared/errors', resource: @answer
   = f.label :body
   = f.text_field :body
   = f.submit 'Post an answer'

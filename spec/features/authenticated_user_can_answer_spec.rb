@@ -5,16 +5,12 @@ feature 'Authenticated user can answer a question', %q{
   a question
 } do
 
-  background do
-    @question = create(:question)
-  end
+  let(:question) { create(:question) }
+  let(:answer) { Faker::Lorem.unique.sentence }
 
   scenario 'Authenticated user can answer a question' do
     sign_in_user
-
-    answer = create(:answer)
-
-    visit question_path(@question)
+    visit question_path(question)
     fill_in 'answer[body]', with: answer
     click_on 'Post an answer'
 
@@ -23,12 +19,18 @@ feature 'Authenticated user can answer a question', %q{
   end
 
   scenario 'Non-authenticated user can not answer a question' do
-    answer = Faker::Lorem.unique.sentence
-
-    visit question_path(@question)
+    visit question_path(question)
     fill_in 'answer[body]', with: answer
     click_on 'Post an answer'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
+  end
+
+  scenario 'Authenticated user recieves an error using invalid params' do
+    sign_in_user
+    visit question_path(question)
+    click_on 'Post an answer'
+
+    expect(page).to have_content "Body can't be blank"
   end
 end
