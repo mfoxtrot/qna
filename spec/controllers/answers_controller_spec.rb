@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:question) { create(:question) }
+  let!(:question) { create(:question) }
 
   describe 'POST #create' do
     sign_in_user
@@ -34,30 +34,37 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let(:answer) { create(:answer) }
+    let!(:answer) { create(:answer) }
+    let(:delete_action) { delete :destroy, params: {id: answer} }
 
     context 'if answer belongs to the user' do
 
       it 'deletes answer' do
         answer
         sign_in(answer.author)
-        expect { delete :destroy, params: {id: answer} }.to change(Answer, :count).by(-1)
+        expect { delete_action }.to change(Answer, :count).by(-1)
       end
 
       it 'redirects to question show' do
         sign_in(answer.author)
-        delete :destroy, params: {id: answer}
+        delete_action
         expect(response).to redirect_to question_path(answer.question)
       end
     end
 
     context 'if answer does not belong to the user' do
-      let(:user) { create(:user) }
+      let!(:user) { create(:user) }
 
       it 'does not delete answer' do
         answer
         sign_in(user)
-        expect { delete :destroy, params: {id: answer} }.to_not change(Answer, :count)
+        expect { delete_action }.to_not change(Answer, :count)
+      end
+
+      it 'redirects to question#show' do
+        answer
+        sign_in(user)
+        delete_action
         expect(response).to redirect_to question_path(answer.question)
       end
     end

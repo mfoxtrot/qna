@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 2) }
+    let!(:questions) { create_list(:question, 2) }
     before { get :index }
 
     it 'pupulates an array of all questions' do
@@ -15,7 +15,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    let(:question) { create(:question) }
+    let!(:question) { create(:question) }
     before { get :show, params: { id: question } }
 
     it 'assigns object to @question variable' do
@@ -43,43 +43,50 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'POST #create' do
     sign_in_user
     context 'with valid attributes' do
+      let(:post_valid_params) { post :create, params: { question: attributes_for(:question)} }
+
       it 'saves the new question' do
-        expect { post :create, params: { question: attributes_for(:question)} }.to change(Question, :count).by(1)
+        expect { post_valid_params }.to change(Question, :count).by(1)
       end
+
       it 'redirects to show' do
-        post :create, params: { question: attributes_for(:question) }
+        post_valid_params
         expect(response).to redirect_to question_path(assigns(:question))
       end
+
       it 'adds new question to current_user''s collection' do
-        expect { post :create, params: { question: attributes_for(:question)} }.to change(@user.questions, :count).by(1)
+        expect { post_valid_params }.to change(@user.questions, :count).by(1)
       end
     end
 
     context 'with invalid attributes' do
+      let(:post_invalid_params) { post :create, params: { question: attributes_for(:invalid_question)}  }
+
       it 'does not save the question' do
-        expect { post :create, params: { question: attributes_for(:invalid_question)} }.to_not change(Question, :count)
+        expect { post_invalid_params }.to_not change(Question, :count)
       end
 
       it 're-renders new view' do
-        post :create, params: { question: attributes_for(:invalid_question) }
+        post_invalid_params
         expect(response).to render_template :new
       end
     end
   end
 
   describe 'DELETE #destroy' do
-    let(:question) { create(:question) }
+    let!(:question) { create(:question) }
+    let(:delete_action) { delete :destroy, params: {id: question} }
 
     context 'if question belongs to the user' do
       it 'deletes question' do
         question
         sign_in(question.author)
-        expect { delete :destroy, params: {id: question} }.to change(Question, :count).by(-1)
+        expect { delete_action }.to change(Question, :count).by(-1)
       end
 
       it 'redirects to questions index' do
         sign_in(question.author)
-        delete :destroy, params: {id: question}
+        delete_action
         expect(response).to redirect_to questions_path
       end
     end
@@ -87,10 +94,17 @@ RSpec.describe QuestionsController, type: :controller do
     context 'if question does not belong to the user' do
       let(:user) { create(:user) }
 
+
       it 'does not delete question' do
         question
         sign_in(user)
-        expect { delete :destroy, params: {id: question} }.to_not change(Question, :count)
+        expect { delete_action }.to_not change(Question, :count)
+      end
+
+      it 'redirects to question#show' do
+        question
+        sign_in(user)
+        delete_action
         expect(response).to redirect_to question_path(question)
       end
     end
