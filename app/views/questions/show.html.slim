@@ -3,10 +3,11 @@ p= @question.title
   = link_to 'Delete question', question_path(@question), method: :delete
 
 p= @question.body
-ol
-  = render @question.answers
+.answers
+  ol
+    = render @question.answers
 br
-= form_with(model: [@question, @answer], local: true) do |f|
+= form_with(model: [@question, @answer], remote:true ) do |f|
   = render 'shared/errors', resource: @answer
   = f.label :body
   = f.text_field :body
