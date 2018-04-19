@@ -15,7 +15,9 @@ feature 'Authenticated user can answer a question', %q{
     click_on 'Post an answer'
 
     expect(page).to have_content 'New answer was added'
-    expect(page).to have_content answer
+    within '.answers' do
+      expect(page).to have_content answer
+    end
   end
 
   scenario 'Non-authenticated user can not answer a question' do
