@@ -7,7 +7,6 @@ class AnswersController < ApplicationController
     @answer.author = current_user
     if @answer.save
       flash[:notice] = 'New answer was added'
-      redirect_to question_path(@question)
     else
       render 'questions/show'
     end

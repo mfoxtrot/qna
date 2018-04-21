@@ -8,13 +8,12 @@ feature 'Authenticated user can answer a question', %q{
   let(:question) { create(:question) }
   let(:answer) { Faker::Lorem.unique.sentence }
 
-  scenario 'Authenticated user can answer a question' do
+  scenario 'Authenticated user can answer a question', js: true do
     sign_in_user
     visit question_path(question)
     fill_in 'answer[body]', with: answer
     click_on 'Post an answer'
 
-    expect(page).to have_content 'New answer was added'
     within '.answers' do
       expect(page).to have_content answer
     end
