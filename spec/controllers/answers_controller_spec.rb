@@ -26,10 +26,6 @@ RSpec.describe AnswersController, type: :controller do
       it 'does not save the new answer' do
         expect { action }.to_not change(Answer, :count)
       end
-      it 're-renders new view' do
-        action
-        expect(response).to render_template 'questions/show'
-      end
     end
   end
 

@@ -10,5 +10,6 @@ br
 = form_with(model: [@question, @answer], remote:true ) do |f|
   = render 'shared/errors', resource: @answer
   = f.label :body
+  .answer-errors
   = f.text_field :body
   = f.submit 'Post an answer'

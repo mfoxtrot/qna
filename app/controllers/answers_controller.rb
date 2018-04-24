@@ -7,8 +7,6 @@ class AnswersController < ApplicationController
     @answer.author = current_user
     if @answer.save
       flash[:notice] = 'New answer was added'
-    else
-      render 'questions/show'
     end
   end
 

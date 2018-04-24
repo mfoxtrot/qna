@@ -27,7 +27,7 @@ feature 'Authenticated user can answer a question', %q{
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 
-  scenario 'Authenticated user recieves an error using invalid params' do
+  scenario 'Authenticated user recieves an error using invalid params', js: true do
     sign_in_user
     visit question_path(question)
     click_on 'Post an answer'
