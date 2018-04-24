@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'features_helper'
 
 feature 'Authenticated user can answer a question', %q{
   In order to help, authenticated user can answer

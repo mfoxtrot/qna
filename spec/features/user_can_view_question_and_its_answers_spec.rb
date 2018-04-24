@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'features_helper'
 
 feature 'User can view a question and its answers', %q{
   In order to have new knowledge, user can view

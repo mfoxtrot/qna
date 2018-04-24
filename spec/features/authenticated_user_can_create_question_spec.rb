@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'features_helper'
 
 feature 'Only authenticated user can add a question', %q{
   User should be authenticated to ask a question
