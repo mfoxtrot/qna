@@ -3,8 +3,11 @@ require 'features_helper'
 feature 'Only authenticated user can add a question', %q{
   User should be authenticated to ask a question
 } do
+
+  let(:user) { create(:user) }
+
   scenario 'Authenticated user is able to create a question' do
-    sign_in_user
+    sign_in_user(user)
 
     title = Faker::Lorem.unique.sentence
     body = Faker::Lorem.unique.sentence
@@ -28,7 +31,7 @@ feature 'Only authenticated user can add a question', %q{
   end
 
   scenario 'Authenticated user recieves an error using invalid params' do
-    sign_in_user
+    sign_in_user(user)
 
     title = Faker::Lorem.unique.sentence
     body = nil

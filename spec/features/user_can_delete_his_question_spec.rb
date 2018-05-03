@@ -2,12 +2,14 @@ require 'features_helper'
 
 feature 'User can delete his question or answer' do
   background do
-    sign_in_user
+    sign_in_user(user)
   end
+
+  let(:user) { create(:user)}
   let(:user1) { create(:user) }
 
   scenario 'User can delete his question' do
-    question = create(:question, author: @user)
+    question = create(:question, author: user)
 
     visit question_path(question)
 

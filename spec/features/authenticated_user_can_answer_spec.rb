@@ -4,12 +4,12 @@ feature 'Authenticated user can answer a question', %q{
   In order to help, authenticated user can answer
   a question
 } do
-
+  let(:user) { create(:user) }
   let(:question) { create(:question) }
   let(:answer) { Faker::Lorem.unique.sentence }
 
   scenario 'Authenticated user can answer a question', js: true do
-    sign_in_user
+    sign_in_user(user)
     visit question_path(question)
     fill_in 'answer[body]', with: answer
     click_on 'Post an answer'
@@ -28,7 +28,7 @@ feature 'Authenticated user can answer a question', %q{
   end
 
   scenario 'Authenticated user recieves an error using invalid params', js: true do
-    sign_in_user
+    sign_in_user(user)
     visit question_path(question)
     click_on 'Post an answer'
 
