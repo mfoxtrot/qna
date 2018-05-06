@@ -110,4 +110,16 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
   end
+
+  describe 'PATCH #update' do
+    let!(:question) { create(:question) }
+    
+    context 'Non-authenticated user' do
+      it 'is not able to change question' do
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body'} }
+        expect(question.title).not_to eq 'new title'
+        expect(question.body).not_to eq 'new body'
+      end
+    end
+  end
 end

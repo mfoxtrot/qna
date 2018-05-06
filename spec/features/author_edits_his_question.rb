@@ -15,7 +15,10 @@ feature 'Author edits his question', %q{
   end
 
   describe 'Non-authenticated user' do
-    scenario 'does not see Edit link on questions page'
+    scenario 'does not see Edit link on questions page' do
+      visit questions_path
+      expect(page).not_to have_link 'Edit'
+    end
   end
 
 end
