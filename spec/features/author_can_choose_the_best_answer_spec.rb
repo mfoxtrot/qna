@@ -23,7 +23,14 @@ feature 'Author can choose the best answer' do
     end
 
     describe 'if he is the author of the question' do
-      scenario 'can choose the best answer'
+      scenario 'can choose the best answer' do
+        author = question.author
+        sign_in_user(author)
+        visit question_path(question)
+        click_on 'Mark as the best'
+
+        expect(page).to have_content 'The best answer'
+      end
     end
   end
 end
