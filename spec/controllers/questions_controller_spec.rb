@@ -114,10 +114,12 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'PATCH #update' do
     let!(:question) { create(:question) }
     let!(:user) { create(:user) }
+    let!(:users_question) { create(:question, author: user) }
 
     context 'Non-authenticated user' do
       it 'is not able to change question' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body'} }
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body'}, format: :js }
+        question.reload
         expect(question.title).not_to eq 'new title'
         expect(question.body).not_to eq 'new body'
       end
@@ -126,9 +128,18 @@ RSpec.describe QuestionsController, type: :controller do
     context 'Authenticated user' do
       it 'non-author cant change question' do
         sign_in(user)
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body'} }
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body'}, format: :js }
+        question.reload
         expect(question.title).not_to eq 'new title'
         expect(question.body).not_to eq 'new body'
+      end
+
+      it 'author can change his question' do
+        sign_in(user)
+        patch :update, params: { id: users_question, question: { title: 'new title', body: 'new body'}, format: :js }
+        users_question.reload
+        expect(users_question.title).to eq 'new title'
+        expect(users_question.body).to eq 'new body'
       end
     end
   end

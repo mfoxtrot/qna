@@ -13,10 +13,20 @@ feature 'Author edits his question', %q{
       given!(:users_question) { create(:question, author: user)}
       before { visit questions_path }
 
-      scenario 'view Edit link on questions page' do
+      scenario 'sees Edit link on questions page' do
         expect(page).to have_link 'Edit'
       end
-      scenario 'edit body of his question'
+      scenario 'edits his question', js: true do
+        click_on 'Edit'
+        fill_in 'question[title]', with: 'New title'
+        fill_in 'question[body]', with: 'New body'
+        click_on 'Save'
+        expect(page).to have_content 'New title'
+        expect(page).to have_content 'New body'
+        expect(page).not_to have_content users_question.title
+        expect(page).not_to have_content users_question.body
+        expect(page).not_to have_selector 'form'
+      end
     end
 
     describe 'if he is not an author of the question' do

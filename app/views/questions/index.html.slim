@@ -1,8 +1,4 @@
 h1 Questions list
-- @questions.each do |q|
-  div
-    h3= q.title
-    p= q.body
-    - if user_signed_in?
-      = link_to 'Edit', '#' if current_user.author_of?(q)
+.questions
+  = render @questions
 p= link_to 'Ask a question', new_question_path
