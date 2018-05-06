@@ -8,7 +8,7 @@ feature 'User can delete his answer' do
   let(:user1) { create(:user) }
   let(:question) { create(:question, author: user1) }
 
-  scenario 'User can delete his answer' do
+  scenario 'User can delete his answer', js: true do
     answer = create(:answer, question: question, author: user)
 
     visit question_path(question)

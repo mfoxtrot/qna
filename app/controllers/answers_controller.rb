@@ -18,7 +18,7 @@ class AnswersController < ApplicationController
     else
       flash[:error] = 'Cannot delete the answer'
     end
-    redirect_to question_path(@answer.question)
+    @question = @answer.question
   end
 
   def update

@@ -2,7 +2,7 @@ li
   - if answer.persisted?
     p= answer.body
     - if user_signed_in? && current_user.author_of?(answer)
-      = link_to 'Delete', answer_path(answer), method: :delete
+      = link_to 'Delete', answer_path(answer), method: :delete, remote: true
       = link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
       p
         = form_with(model: answer, remote: true, html: { id: "edit-answer-#{answer.id}", class: 'edit-answer' }) do |f|
