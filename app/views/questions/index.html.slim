@@ -3,4 +3,6 @@ h1 Questions list
   div
     h3= q.title
     p= q.body
+    - if user_signed_in?
+      = link_to 'Edit', '#' if current_user.author_of?(q)
 p= link_to 'Ask a question', new_question_path
