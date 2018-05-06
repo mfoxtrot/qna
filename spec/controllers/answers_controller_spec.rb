@@ -95,6 +95,32 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).not_to eq 'new body'
       end
     end
+  end
 
+  describe 'PATCH #set_as_the_best' do
+    let!(:question) { create(:question) }
+    let!(:answer) { create(:answer, question: question) }
+    let!(:user) { create(:user) }
+    let(:set_as_the_best) { patch :set_as_the_best, params: { id: answer.id }, format: :js }
+
+    context 'Questions author' do
+      it 'can choose the best answer' do
+        sign_in(question.author)
+        set_as_the_best
+        expect(answer.best?).to eq true
+      end
+      it 'can choose only one answer as the best one' do
+        another_answer = create(:answer, question: question)
+        set_as_the_best
+        expect(another_answer.best?).to eq false
+      end
+    end
+
+    context 'Non author' do
+      it 'can not choose the best answer' do
+        set_as_the_best
+        expect(answer.best?).to eq false
+      end
+    end
   end
 end
