@@ -28,6 +28,9 @@ class AnswersController < ApplicationController
     @question = @answer.question
   end
 
+  def set_as_the_best
+  end
+
   private
 
   def find_question
