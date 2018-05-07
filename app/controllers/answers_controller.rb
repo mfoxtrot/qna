@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question, only: [:new, :create]
-  before_action :find_answer, only: [:destroy, :update]
+  before_action :find_answer, only: [:destroy, :update, :set_as_the_best]
 
   def create
     @answer = @question.answers.create(answer_params)
@@ -19,6 +19,7 @@ class AnswersController < ApplicationController
       flash[:error] = 'Cannot delete the answer'
     end
     @question = @answer.question
+    render 'answers/answers_list'
   end
 
   def update
@@ -29,6 +30,12 @@ class AnswersController < ApplicationController
   end
 
   def set_as_the_best
+    @question = @answer.question
+    if current_user.author_of?(@question)
+      @question.best_answer = @answer
+      @question.save
+    end
+    render 'answers/answers_list'
   end
 
   private

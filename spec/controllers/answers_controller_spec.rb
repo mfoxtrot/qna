@@ -107,11 +107,13 @@ RSpec.describe AnswersController, type: :controller do
       it 'can choose the best answer' do
         sign_in(question.author)
         set_as_the_best
-        expect(answer.best?).to eq true
+        question.reload
+        expect(answer.best?).to be_truthy
       end
       it 'can choose only one answer as the best one' do
         another_answer = create(:answer, question: question)
         set_as_the_best
+        question.reload
         expect(another_answer.best?).to eq false
       end
     end
@@ -119,6 +121,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'Non author' do
       it 'can not choose the best answer' do
         set_as_the_best
+        question.reload
         expect(answer.best?).to eq false
       end
     end

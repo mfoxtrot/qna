@@ -23,7 +23,7 @@ feature 'Author can choose the best answer' do
     end
 
     describe 'if he is the author of the question' do
-      scenario 'can choose the best answer' do
+      scenario 'can choose the best answer', js: true do
         author = question.author
         sign_in_user(author)
         visit question_path(question)

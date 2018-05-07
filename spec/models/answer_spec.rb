@@ -12,7 +12,7 @@ RSpec.describe Answer, type: :model do
 
     it '#best?' do
       question.best_answer = answer
-      expect(answer.best?).to be_true
+      expect(answer.best?).to be_truthy
     end
   end
 end
