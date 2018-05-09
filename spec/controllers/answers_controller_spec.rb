@@ -104,8 +104,11 @@ RSpec.describe AnswersController, type: :controller do
     let(:set_as_the_best) { patch :set_as_the_best, params: { id: answer.id }, format: :js }
 
     context 'Questions author' do
-      it 'can choose the best answer' do
+      before do
         sign_in(question.author)
+      end
+
+      it 'can choose the best answer' do
         set_as_the_best
         question.reload
         expect(answer.best?).to be_truthy
@@ -116,10 +119,20 @@ RSpec.describe AnswersController, type: :controller do
         question.reload
         expect(another_answer.best?).to eq false
       end
+
+      it 'can rechoose the best answer' do
+        another_answer = create(:answer, question: question)
+        set_as_the_best
+        question.reload
+        patch :set_as_the_best, params: { id: another_answer.id }, format: :js
+        question.reload
+        expect(another_answer.best?).to eq true
+      end
     end
 
     context 'Non author' do
       it 'can not choose the best answer' do
+        sign_in(user)
         set_as_the_best
         question.reload
         expect(answer.best?).to eq false

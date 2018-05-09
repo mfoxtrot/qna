@@ -1,5 +1,5 @@
-li
-  - if answer.persisted?
+- if answer.persisted?
+  = content_tag(:li, id: "answer-#{answer.id}")
     p= answer.body
     - if answer.best?
       p The best answer
