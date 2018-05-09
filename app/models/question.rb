@@ -4,4 +4,8 @@ class Question < ApplicationRecord
   belongs_to :best_answer, class_name: 'Answer', optional: true
 
   validates :title, :body, presence: true
+
+  def sorted_answers
+    self.answers.sort_by { |answer| answer.best? ? 0 : 1 }
+  end
 end

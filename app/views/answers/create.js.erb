@@ -3,6 +3,6 @@
   $('.answer-errors').html('<%= j message %>');
   <% end %>
 <% else %>
-  $('.answers').html('<%= j render @question.answers %>');
+  $('.answers').html('<%= j render @question.sorted_answers %>');
   $('input[name="answer[body]"]').val('');
 <% end %>
