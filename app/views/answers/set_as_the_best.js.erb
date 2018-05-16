@@ -4,7 +4,7 @@
   <% end %>
 <% else %>
   $('.flash').html('<%= j render "application/flash"%>');
-  $('.answers').html('<%= j render @question.sorted_answers %>');
+  $('.answers').html('<%= j render @question.answers %>');
   $('input[name="answer[body]"]').val('');
   $('.edit-answer-link').click(function(e){
     e.preventDefault();

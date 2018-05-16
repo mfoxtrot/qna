@@ -4,7 +4,9 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
+  default_scope { order(best: :desc) }
+
   def best?
-    self.question.best_answer == self
+    self.best
   end
 end

@@ -1,0 +1,10 @@
+$('.flash').html('<%= j render "application/flash"%>');
+$('.answers').html('<%= j render @question.answers %>');
+$('input[name="answer[body]"]').val('');
+$('.edit-answer-link').click(function(e){
+  e.preventDefault();
+  $(this).hide();
+  answer_id = $(this).data('answerId');
+  console.log(answer_id)
+  $('form#edit-answer-' + answer_id).show();
+});

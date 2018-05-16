@@ -5,7 +5,7 @@ p= @question.title
 p= @question.body
 .answers
   ol
-    = render @question.sorted_answers
+    = render @question.answers
 br
 = form_with(model: [@question, @answer], remote:true ) do |f|
   = render 'shared/errors', resource: @answer

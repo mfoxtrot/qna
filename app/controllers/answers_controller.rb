@@ -19,7 +19,6 @@ class AnswersController < ApplicationController
       flash[:error] = 'Cannot delete the answer'
     end
     @question = @answer.question
-    render 'answers/answers_list'
   end
 
   def update
@@ -32,10 +31,9 @@ class AnswersController < ApplicationController
   def set_as_the_best
     @question = @answer.question
     if current_user.author_of?(@question)
-      @question.best_answer = @answer
-      @question.save
+      @question.set_the_best_answer(@answer)
     end
-    render 'answers/answers_list'
+    @question.reload
   end
 
   private

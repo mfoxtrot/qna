@@ -111,12 +111,14 @@ RSpec.describe AnswersController, type: :controller do
       it 'can choose the best answer' do
         set_as_the_best
         question.reload
+        answer.reload
         expect(answer.best?).to be_truthy
       end
       it 'can choose only one answer as the best one' do
         another_answer = create(:answer, question: question)
         set_as_the_best
         question.reload
+        another_answer.reload
         expect(another_answer.best?).to eq false
       end
 
@@ -124,8 +126,10 @@ RSpec.describe AnswersController, type: :controller do
         another_answer = create(:answer, question: question)
         set_as_the_best
         question.reload
+        answer.reload
         patch :set_as_the_best, params: { id: another_answer.id }, format: :js
         question.reload
+        another_answer.reload
         expect(another_answer.best?).to eq true
       end
     end

@@ -14,11 +14,18 @@ RSpec.describe Question, type: :model do
   describe 'Methods' do
     let!(:question) { create(:question_with_answers) }
 
-    it 'sorted_answers' do
+    it 'sorts answers' do
       best_answer = question.answers[5]
-      question.best_answer = best_answer
+      question.set_the_best_answer(best_answer)
+      question.reload
+      expect(question.answers[0]).to eq best_answer
+    end
 
-      expect(question.sorted_answers[0]).to eq best_answer
+    it 'set_the_best_answer' do
+      best_answer = question.answers[5]
+      question.set_the_best_answer(best_answer)
+
+      expect(best_answer.best?).to be_truthy
     end
   end
 end

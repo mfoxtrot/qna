@@ -1,11 +1,13 @@
 class Question < ApplicationRecord
   has_many :answers, dependent: :destroy
   belongs_to :author, class_name: 'User'
-  belongs_to :best_answer, class_name: 'Answer', optional: true
 
   validates :title, :body, presence: true
 
-  def sorted_answers
-    self.answers.sort_by { |answer| answer.best? ? 0 : 1 }
+  def set_the_best_answer(value)
+    self.answers.each do |answer|
+      answer.best = (answer==value)
+      answer.save
+    end
   end
 end
