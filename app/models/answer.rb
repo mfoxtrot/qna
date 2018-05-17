@@ -6,7 +6,4 @@ class Answer < ApplicationRecord
 
   default_scope { order(best: :desc) }
 
-  def best?
-    self.best
-  end
 end

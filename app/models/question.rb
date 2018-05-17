@@ -5,9 +5,9 @@ class Question < ApplicationRecord
   validates :title, :body, presence: true
 
   def set_the_best_answer(value)
-    self.answers.each do |answer|
-      answer.best = (answer==value)
-      answer.save
+    Question.transaction do
+      self.answers.update_all best: false
+      self.answers.update(value.id, best: true)
     end
   end
 end
