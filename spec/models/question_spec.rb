@@ -18,7 +18,7 @@ RSpec.describe Question, type: :model do
       best_answer = question.answers[5]
       question.set_the_best_answer(best_answer)
       best_answer.reload
-      expect(best_answer.best?).to be_truthy
+      expect(best_answer).to be_best
     end
 
     it 'resets the best answer' do
@@ -27,7 +27,7 @@ RSpec.describe Question, type: :model do
       new_best_answer = question.answers[7]
       question.set_the_best_answer(new_best_answer)
       new_best_answer.reload
-      expect(new_best_answer.best?).to be_truthy
+      expect(new_best_answer).to be_best
     end
   end
 

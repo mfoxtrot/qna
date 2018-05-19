@@ -4,10 +4,10 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
-  def set_the_best_answer(value)
+  def set_the_best_answer(answer)
     Question.transaction do
-      self.answers.update_all best: false
-      self.answers.update(value.id, best: true)
+      answers.update_all(best: false)
+      answer.update!(best: true)
     end
   end
 end
