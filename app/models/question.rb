@@ -1,8 +1,11 @@
 class Question < ApplicationRecord
   has_many :answers, dependent: :destroy
   belongs_to :author, class_name: 'User'
+  has_many :attachments, dependent: :destroy
 
   validates :title, :body, presence: true
+
+  accepts_nested_attributes_for :attachments
 
   def set_the_best_answer(answer)
     Question.transaction do
