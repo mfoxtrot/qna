@@ -1,6 +1,10 @@
 - if answer.persisted?
   = content_tag(:li, id: "answer-#{answer.id}")
     p= answer.body
+    p Attachments
+    ul
+      - answer.attachments.each do |a|
+        li= link_to a.file.identifier, a.file.url
     - if answer.best?
       p The best answer
     - if user_signed_in?
