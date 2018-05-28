@@ -15,18 +15,18 @@ feature 'User can delete his answer' do
 
     expect(page).to have_content answer.body
 
-    find_link('Delete', href: answer_path(answer)).click
+    find_link('Delete answer', href: answer_path(answer)).click
 
     expect(page).to have_content 'Answer was successfully deleted'
     expect(current_path).to eq question_path(question)
     expect(page).to have_no_content answer.body
   end
 
-  scenario 'User can not delete another''s answer' do
+  scenario 'User can not delete another''s answer', js: true do
     answer = create(:answer, question: question, author: user1)
 
     visit question_path(question)
 
-    expect(page).to have_no_link('Delete', answer_path(answer))
+    expect(page).to have_no_link('Delete answer', answer_path(answer))
   end
 end
