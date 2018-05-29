@@ -5,7 +5,7 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
-  accepts_nested_attributes_for :attachments
+  accepts_nested_attributes_for :attachments, reject_if: :all_blank
 
   def set_the_best_answer(answer)
     Question.transaction do
