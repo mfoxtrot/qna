@@ -4,7 +4,10 @@
     p Attachments
     ul
       - answer.attachments.each do |a|
-        li= link_to a.file.identifier, a.file.url
+        = content_tag :li, data: { attachment_id: a.id }
+          = link_to a.file.identifier, a.file.url
+          - if user_signed_in? && current_user.author_of?(answer)
+            = link_to 'Delete file', attachment_path(a), method: :delete, remote: true
     - if answer.best?
       p The best answer
     - if user_signed_in?
