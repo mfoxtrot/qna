@@ -1,8 +1,26 @@
-p= @question.title
+.question
+  p= @question.title
 - if user_signed_in? && current_user.author_of?(@question)
   = link_to 'Delete question', question_path(@question), method: :delete
 
 p= @question.body
+
+.question_vote
+  .message
+  p Votes
+  .links
+    div class =(['new_vote', @vote.nil? ? nil : 'hide'].join(' '))
+      p
+        = link_to 'Vote up', vote_up_question_path(@question), method: :post, remote: true, data: {type: :json }, class: 'vote_up_link'
+      p
+        = link_to 'Vote down', vote_down_question_path(@question), method: :post, remote: true, data: {type: :json}, class: 'vote_down_link'
+    div class =(['existing_vote', @vote.nil? ? 'hide' : nil].join(' '))
+      p.vote_value
+        - unless @vote.nil?
+          = @vote.value
+      p
+        = link_to 'Delete vote', vote_delete_question_path(@question), method: :post, remote: true, data: {type: :json}, class: 'vote_delete_link'
+
 p Attachments
 .attachments
   ul

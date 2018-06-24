@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_question, only: [:show, :destroy, :update]
+  before_action :find_question, only: [:show, :destroy, :update, :vote_up, :vote_down, :vote_delete]
 
   def index
     @questions = Question.all
@@ -9,6 +9,7 @@ class QuestionsController < ApplicationController
   def show
     @answer = @question.answers.new
     @answer.attachments.build
+    @vote = @question.vote_by_user(current_user)
   end
 
   def new
@@ -42,6 +43,38 @@ class QuestionsController < ApplicationController
     else
       redirect_to @question
     end
+  end
+
+  def vote_up
+    unless current_user.author_of?(@question)
+      @vote = @question.vote_up(current_user)
+      respond_to do |format|
+        format.json {
+          render json: {
+            vote: @vote,
+            message: 'You have successfully voted for the question'
+          }.to_json
+        }
+      end
+    end
+  end
+
+  def vote_down
+    unless current_user.author_of?(@question)
+      @vote = @question.vote_down(current_user)
+      respond_to do |format|
+        format.json {
+          render json: {
+            vote: @vote,
+            message: 'You have successfully voted for the question'
+          }.to_json
+        }
+      end
+    end
+  end
+
+  def vote_delete
+    @question.delete_vote(current_user)
   end
 
   private

@@ -10,6 +10,12 @@ Rails.application.routes.draw do
         post :set_as_the_best
       end
     end
+
+    member do
+      post :vote_up
+      post :vote_down
+      post :vote_delete
+    end
   end
 
   resources :attachments, only: :destroy

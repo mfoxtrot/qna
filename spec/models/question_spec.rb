@@ -43,4 +43,25 @@ RSpec.describe Question, type: :model do
       expect(question.answers[0]).to eq best_answer
     end
   end
+
+  describe 'votes' do
+    let!(:question) { create(:question) }
+    let!(:user) { create(:user)}
+
+    it '#vote_up' do
+      question.vote_up(user)
+      expect(question.votes.count).to eq(1)
+    end
+
+    it '#vote_down' do
+      question.vote_down(user)
+      expect(question.votes.count).to eq(1)
+    end
+
+    it '#delete_vote' do
+      question.vote_up(user)
+      question.delete_vote(user)
+      expect(question.votes.count).to eq(0)
+    end
+  end
 end
