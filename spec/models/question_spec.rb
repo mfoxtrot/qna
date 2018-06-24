@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'models/concerns/votable_spec.rb'
 
 RSpec.describe Question, type: :model do
   describe 'Associations' do
@@ -13,6 +14,8 @@ RSpec.describe Question, type: :model do
   end
 
   it { should accept_nested_attributes_for :attachments }
+
+  it_behaves_like 'votable'
 
   describe '#set_the_best_answer' do
     let!(:question) { create(:question_with_answers) }
