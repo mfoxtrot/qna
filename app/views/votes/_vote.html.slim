@@ -1,0 +1,15 @@
+= content_tag(:div, '', class: 'message', data: {id: resource.id} )
+p Votes
+.links
+  - if signed_in? && !current_user.author_of?(resource)
+    = content_tag(:div, class: ['new_vote', vote.nil? ? nil : 'hide'].join(' '), data: {id: resource.id} )
+      p
+        = link_to 'Vote up', resource.vote_up_path, method: :post, remote: true, data: {type: :json}, class: 'vote_up_link'
+      p
+        = link_to 'Vote down', resource.vote_down_path, method: :post, remote: true, data: {type: :json}, class: 'vote_down_link'
+    = content_tag(:div, class: ['existing_vote', vote.nil? ? 'hide' : nil].join(' '), data: {id: resource.id} )
+      p.vote_value
+        - unless vote.nil?
+          = vote.value
+      p
+        = link_to 'Delete vote', resource.vote_delete_path, method: :post, remote: true, data: {type: :json, id: resource.id}, class: 'vote_delete_link'

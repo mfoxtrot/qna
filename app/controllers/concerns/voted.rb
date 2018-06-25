@@ -10,7 +10,7 @@ module Voted
        @vote = @voted.vote_up(current_user)
        respond_to do |format|
          format.json {
-           render json: Hash[:vote, @vote, :message, 'You have successfully voted for the question']
+           render json: Hash[:vote, @vote, :message, "You have successfully voted for the #{resource_name}"]
          }
        end
      end
@@ -21,7 +21,7 @@ module Voted
        @vote = @voted.vote_down(current_user)
        respond_to do |format|
          format.json {
-           render json: Hash[:vote, @vote, :message, 'You have successfully voted for the question']
+           render json: Hash[:vote, @vote, :message, "You have successfully voted for the #{resource_name}"]
          }
        end
      end
@@ -39,5 +39,9 @@ module Voted
 
    def set_voted
      @voted = model_klass.find(params[:id])
+   end
+
+   def resource_name
+     controller_name.classify.underscore
    end
 end

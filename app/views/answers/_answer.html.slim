@@ -1,6 +1,8 @@
 - if answer.persisted?
   = content_tag(:li, id: "answer-#{answer.id}")
     p= answer.body
+    .answer_vote
+      = render 'votes/vote', vote: answer.vote_by_user(current_user), resource: answer
     p Attachments
     ul
       = render answer.attachments
