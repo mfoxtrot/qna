@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'models/concerns/votable_spec.rb'
 
 RSpec.describe Question, type: :model do
   describe 'Associations' do
@@ -44,27 +43,6 @@ RSpec.describe Question, type: :model do
       question.set_the_best_answer(best_answer)
       question.reload
       expect(question.answers[0]).to eq best_answer
-    end
-  end
-
-  describe 'votes' do
-    let!(:question) { create(:question) }
-    let!(:user) { create(:user)}
-
-    it '#vote_up' do
-      question.vote_up(user)
-      expect(question.votes.count).to eq(1)
-    end
-
-    it '#vote_down' do
-      question.vote_down(user)
-      expect(question.votes.count).to eq(1)
-    end
-
-    it '#delete_vote' do
-      question.vote_up(user)
-      question.delete_vote(user)
-      expect(question.votes.count).to eq(0)
     end
   end
 end
