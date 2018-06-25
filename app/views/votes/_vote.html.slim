@@ -1,4 +1,7 @@
 = content_tag(:div, '', class: 'message', data: {id: resource.id} )
+= content_tag(:div, '', class: 'rating', data: {id: resource.id} )
+  p
+    = "Rating: #{resource.rating}"
 p Votes
 .links
   - if signed_in? && !current_user.author_of?(resource)

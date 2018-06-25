@@ -35,4 +35,20 @@ shared_examples_for 'votable' do
   it '#vote_delete_path' do
     expect(obj.vote_delete_path).to eq("/#{obj.class.to_s.underscore.pluralize}/#{obj.id}/vote_delete")
   end
+
+  it 'increases rating on vote_up' do
+    obj.vote_up(user)
+    expect(obj.rating).to eq(1)
+  end
+
+  it 'decreases rating on vote_down' do
+    obj.vote_down(user)
+    expect(obj.rating).to eq(-1)
+  end
+
+  it 'decreases rating on delete_vote' do
+    obj.vote_up(user)
+    obj.delete_vote(user)
+    expect(obj.rating).to be_zero
+  end
 end

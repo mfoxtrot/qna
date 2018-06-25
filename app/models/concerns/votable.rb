@@ -20,7 +20,10 @@ module Votable
 
   def delete_vote(user)
     @vote = vote_by_user(user)
-    @vote.destroy unless @vote.nil?
+    unless @vote.nil?
+      @vote.destroy
+      self.update!(rating: votes.sum(:value))
+    end
   end
 
   def vote_up_path
@@ -38,6 +41,8 @@ module Votable
   private
     def make_a_vote(value, user)
       @vote = votes.create(value: value, user: user)
+      self.update!(rating: votes.sum(:value))
+      @vote
     end
 
     def resource_name
@@ -46,5 +51,9 @@ module Votable
 
     def get_route(method_name)
       send(method_name.to_sym, self)
+    end
+
+    def klass_name
+      model_name
     end
 end

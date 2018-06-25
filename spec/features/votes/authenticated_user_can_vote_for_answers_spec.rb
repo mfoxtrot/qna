@@ -33,6 +33,7 @@ feature 'Authenticated user can vote for an answer he likes' do
       within("#answer-#{answer.id}") do
         click_on 'Vote up'
         expect(page).to have_content 'You have successfully voted for the answer'
+        expect(page).to have_content 'Rating: 1'
       end
 
     end
@@ -42,8 +43,9 @@ feature 'Authenticated user can vote for an answer he likes' do
       visit question_path(answer.question)
       within("#answer-#{answer.id}") do
         click_on 'Vote down'
+        expect(page).to have_content 'You have successfully voted for the answer'
+        expect(page).to have_content 'Rating: -1'
       end
-      expect(page).to have_content 'You have successfully voted for the answer'
     end
 
     scenario 'is not able to vote for an answer twice', js: true do
