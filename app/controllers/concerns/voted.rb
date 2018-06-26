@@ -10,7 +10,7 @@ module Voted
        @vote = @voted.vote_up(current_user)
        respond_to do |format|
          format.json {
-           render json: Hash[:vote, @vote, :message, "You have successfully voted for the #{resource_name}", :rating, @voted.rating]
+           render json: {vote: @vote, message: "You have successfully voted for the #{resource_name}", rating: @voted.rating}
          }
        end
      end
@@ -21,7 +21,7 @@ module Voted
        @vote = @voted.vote_down(current_user)
        respond_to do |format|
          format.json {
-           render json: Hash[:vote, @vote, :message, "You have successfully voted for the #{resource_name}", :rating, @voted.rating]
+           render json: {vote: @vote, message: "You have successfully voted for the #{resource_name}", rating: @voted.rating}
          }
        end
      end
@@ -31,7 +31,7 @@ module Voted
      @voted.delete_vote(current_user)
      respond_to do |format|
        format.json {
-         render json: Hash[:rating, @voted.rating, :votable_id, @voted.id]
+         render json: {rating: @voted.rating, votable_id: @voted.id}
        }
      end
    end
