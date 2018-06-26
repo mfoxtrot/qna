@@ -28,7 +28,7 @@ module Votable
 
   private
     def make_a_vote(value, user)
-      @vote = votes.create(value: value, user: user)
+      @vote = votes.create!(value: value, user: user)
       self.update!(rating: votes.sum(:value))
       @vote
     end
