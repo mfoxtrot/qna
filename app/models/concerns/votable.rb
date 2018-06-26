@@ -32,12 +32,4 @@ module Votable
       self.update!(rating: votes.sum(:value))
       @vote
     end
-
-    def resource_name
-      model_name.param_key
-    end
-
-    def get_route(method_name)
-      send(method_name.to_sym, self)
-    end
 end
