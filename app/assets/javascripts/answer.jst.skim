@@ -1,0 +1,2 @@
+li(id="answer-#{@answer.id}")
+  p #{@answer.body}

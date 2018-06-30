@@ -34,4 +34,46 @@ feature 'Authenticated user can answer a question', %q{
 
     expect(page).to have_content "Body can't be blank"
   end
+
+  context 'multiple sessions' do
+    let(:another_question) { create(:question) }
+    scenario 'if user views a question he can view newly added answers to the question', js: true do
+      answer_body = Faker::Lorem.unique.sentence
+
+      Capybara.using_session('user') do
+        sign_in_user(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest_view_the_question') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('quest_view_another_question') do
+        visit question_path(another_question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'answer[body]', with: answer
+        click_on 'Post an answer'
+
+        within '.answers' do
+          expect(page).to have_content answer
+        end
+      end
+
+      Capybara.using_session('guest_view_the_question') do
+        within('.answers') do
+          expect(page).to have_content answer
+        end
+      end
+
+      Capybara.using_session('quest_view_another_question') do
+        within('.answers') do
+          expect(page).not_to have_content answer
+        end
+      end
+
+    end
+  end
 end

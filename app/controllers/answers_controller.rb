@@ -4,6 +4,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question, only: [:new, :create]
   before_action :find_answer, only: [:destroy, :update, :set_as_the_best]
+  after_action :publish_answer, only: :create
 
   def create
     @answer = @question.answers.create(answer_params)
@@ -50,5 +51,13 @@ class AnswersController < ApplicationController
 
   def find_answer
     @answer = Answer.find(params[:id])
+  end
+
+  def publish_answer
+    return if @answer.errors.any?
+    ActionCable.server.broadcast(
+      "answers-#{@answer.question.id}",
+      ApplicationController.render( json: { answer: @answer } )
+    )
   end
 end

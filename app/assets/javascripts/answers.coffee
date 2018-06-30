@@ -28,3 +28,18 @@ $ ->
     $('.answer_vote .rating[data-id=' + response.votable_id + ']').html('<p>Rating: ' + response.rating + '</p>');
     $('.answer_vote .existing_vote[data-id=' + response.votable_id + ']').hide();
     $('.answer_vote .new_vote[data-id=' + response.votable_id + ']').show();
+
+
+  App.cable.subscriptions.create('AnswersChannel', {
+    connected: ->
+      console.log('connected!');
+      question_id = $('.question').data('questionId');
+      @perform 'follow', question_id: question_id
+    ,
+
+    received: (data) ->
+      console.log data
+      json_data = JSON.parse(data)
+      block_to_add = JST["answer"]({answer: json_data.answer})
+      $('.answers .answers_list').append(block_to_add)
+    })

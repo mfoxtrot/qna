@@ -3,6 +3,6 @@
   $('.answer-errors').html('<%= j message %>');
   <% end %>
 <% else %>
-  $('.answers').html('<%= j render @question.answers %>');
-  $('input[name="answer[body]"]').val('');
+  $('.answers .answers_list').html('<%= j render @question.answers %>');
+  $('textarea[name="answer[body]"]').val('');
 <% end %>

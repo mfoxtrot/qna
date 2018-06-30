@@ -1,4 +1,4 @@
-.question
+= content_tag :div, class: 'question', data: {question_id: @question.id }
   p= @question.title
 - if user_signed_in? && current_user.author_of?(@question)
   = link_to 'Delete question', question_path(@question), method: :delete
@@ -12,7 +12,7 @@ p Attachments
   ul
     = render @question.attachments
 .answers
-  ol
+  = content_tag :ol, class: 'answers_list'
     = render @question.answers
 br
 = form_with(model: [@question, @answer], remote:true ) do |f|
