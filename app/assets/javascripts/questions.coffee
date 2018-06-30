@@ -24,3 +24,19 @@ $ ->
     $('.question_vote .rating').html('<p>Rating: ' + response.rating + '</p>');
     $('.question_vote .existing_vote').hide();
     $('.question_vote .new_vote').show();
+
+  App.cable.subscriptions.create('QuestionsChannel', {
+    connected: ->
+      console.log('connected!');
+      @perform 'follow'
+    ,
+
+    received: (data) ->
+      user_id = $('.questions').data('userId');
+      json_data = JSON.parse(data);
+      if (user_id == json_data.question.author_id)
+        block_to_add = json_data.authors_template
+      else
+        block_to_add = JST["question"]({ question: json_data.question });
+      $('.questions').append(block_to_add)
+    })

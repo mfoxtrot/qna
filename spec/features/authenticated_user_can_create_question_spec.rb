@@ -44,4 +44,34 @@ feature 'Only authenticated user can add a question', %q{
 
     expect(page).to have_content "Body can't be blank"
   end
+
+  context 'multiple sessions' do
+    scenario "questions appears on another user's page", js: true do
+      title = Faker::Lorem.unique.sentence
+      body = Faker::Lorem.unique.sentence
+
+      Capybara.using_session('user') do
+        sign_in_user(user)
+        visit questions_path
+      end
+
+      Capybara.using_session('guest') do
+        visit questions_path
+      end
+
+      Capybara.using_session('user') do
+        click_on 'Ask a question'
+        fill_in 'Title', with: title
+        fill_in 'Body', with: body
+        click_on 'Create'
+        expect(page).to have_content 'The question was created successfully'
+        expect(page).to have_content title
+        expect(page).to have_content body
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content body
+      end
+    end
+  end
 end

@@ -38,9 +38,9 @@ gem 'slim-rails'
 gem 'rails-controller-testing'
 gem 'devise'
 gem 'jquery-rails'
-
 gem 'carrierwave'
 gem 'cocoon'
+gem 'skim'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -54,6 +54,7 @@ group :development, :test do
   gem 'launchy'
   gem 'database_cleaner'
   gem 'capybara-webkit'
+  gem 'fuubar'
 end
 
 group :development do

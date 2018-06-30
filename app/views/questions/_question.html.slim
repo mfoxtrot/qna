@@ -1,8 +1,8 @@
 div
   h3= question.title
   p= question.body
-  - if user_signed_in?
-    - if current_user.author_of?(question)
+  - unless user.nil?
+    - if user.author_of?(question)
       = link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
       p
         = form_with(model: question, remote: true, html: { id: "edit-question-#{question.id}", class: 'edit-question' }) do |f|

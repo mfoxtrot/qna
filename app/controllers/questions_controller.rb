@@ -3,9 +3,11 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find_question, only: [:show, :destroy, :update, :vote_up, :vote_down, :vote_delete]
+  after_action :publish_question, only: [:create]
 
   def index
     @questions = Question.all
+    @user_id = signed_in? ? current_user.id : 0
   end
 
   def show
@@ -51,6 +53,22 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, attachments_attributes: [:file])
+  end
+
+  def publish_question
+    return if @question.errors.any?
+    ActionCable.server.broadcast(
+      'questions',
+      ApplicationController.render(
+        json: {
+          question: @question,
+          authors_template: ApplicationController.render(
+            partial: 'questions/question',
+            locals: { question: @question, user: @question.author }
+            )
+          }
+      )
+    )
   end
 
   def find_question
