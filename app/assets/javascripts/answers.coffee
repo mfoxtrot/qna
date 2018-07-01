@@ -51,3 +51,21 @@ $ ->
       block_to_add = JST["answer"]({answer: json_data.answer})
       $('.answers .answers_list').append(block_to_add)
     })
+
+  App.cable.subscriptions.create('CommentsChannel', {
+    connected: ->
+      listItems = $('.answers_list > li')
+      subscribe = (item, obj) ->
+        answerId = $(item).data('answerId')
+        obj.perform 'follow', {commentable: 'answer', id: answerId}
+        console.log answerId
+      subscribe(item, @) for item in listItems
+    ,
+
+    received: (data) ->
+      json_data = JSON.parse(data);
+      console.log json_data
+      block_to_add = JST["comment"]({ comment: json_data.comment, author: json_data.author });
+      console.log block_to_add
+      $('.answer_comments[data-id=' + json_data.comment.commentable_id + '] .comments_list').append(block_to_add)
+    })

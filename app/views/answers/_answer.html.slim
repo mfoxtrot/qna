@@ -1,5 +1,5 @@
 - if answer.persisted?
-  = content_tag(:li, id: "answer-#{answer.id}")
+  = content_tag(:li, id: "answer-#{answer.id}", data: {answer_id: answer.id})
     p= answer.body
     .answer_vote
       = render 'votes/vote', vote: answer.vote_by_user(current_user), resource: answer

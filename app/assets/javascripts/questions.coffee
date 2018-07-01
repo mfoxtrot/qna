@@ -47,3 +47,20 @@ $ ->
         block_to_add = JST["question"]({ question: json_data.question });
       $('.questions').append(block_to_add)
     })
+
+  App.cable.subscriptions.create('CommentsChannel', {
+    connected: ->
+      console.log 'comments channel connected!'
+      question_id = $('.question').data('questionId')
+      console.log question_id
+      @perform 'follow', {commentable: 'question', id: question_id}
+    ,
+
+    received: (data) ->
+      json_data = JSON.parse(data);
+      console.log json_data
+      block_to_add = JST["comment"]({ comment: json_data.comment, author: json_data.author });
+      console.log block_to_add
+      $('.question_comments .comments_list').append(block_to_add)
+      console.log $('.question_comments .comments_list')
+    })
