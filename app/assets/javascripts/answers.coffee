@@ -29,6 +29,14 @@ $ ->
     $('.answer_vote .existing_vote[data-id=' + response.votable_id + ']').hide();
     $('.answer_vote .new_vote[data-id=' + response.votable_id + ']').show();
 
+  $('.answer_comments .comment_form').bind 'ajax:success', (e) ->
+    console.log e.detail
+    response = e.detail[0];
+    answer_id=response.comment.commentable_id
+    block_to_add = JST["comment"]({ comment: response.comment, author: response.author })
+    $('.answer_comments[data-id=' + answer_id + '] .comments_list').append(block_to_add)
+    $('.answer_comments[data-id=' + answer_id + '] textarea[name="answer[comment_body]"]').val('')
+
 
   App.cable.subscriptions.create('AnswersChannel', {
     connected: ->

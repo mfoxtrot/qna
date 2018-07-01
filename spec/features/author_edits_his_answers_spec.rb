@@ -41,7 +41,9 @@ feature 'Edit an answer', %q{
           click_on 'Save'
           expect(page).not_to have_content answer.body
           expect(page).to have_content 'edited answer'
-          expect(page).to_not have_selector 'textarea'
+          within('.edit_answer') do
+            expect(page).to_not have_selector 'textarea'
+          end
         end
       end
     end
