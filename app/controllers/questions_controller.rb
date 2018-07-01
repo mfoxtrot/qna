@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
   include Voted
+  include Commented
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find_question, only: [:show, :destroy, :update, :vote_up, :vote_down, :vote_delete]
@@ -14,6 +15,7 @@ class QuestionsController < ApplicationController
     @answer = @question.answers.new
     @answer.attachments.build
     @vote = @question.vote_by_user(current_user)
+    @comment = @question.comments.new
   end
 
   def new

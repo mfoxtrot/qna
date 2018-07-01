@@ -1,0 +1,5 @@
+- if comment.persisted?
+  li
+    = "#{comment.user.email} at #{comment.created_at} says:"
+    <br>
+    = comment.body

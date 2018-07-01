@@ -11,6 +11,11 @@ p Attachments
 .attachments
   ul
     = render @question.attachments
+
+p Comments
+.question_comments
+  = render 'comments/comments_list', resource: @question
+
 .answers
   = content_tag :ol, class: 'answers_list'
     = render @question.answers

@@ -1,0 +1,4 @@
+li
+  span #{@author.email} at #{@comment.created_at} says:
+  br
+  span #{@comment.body}

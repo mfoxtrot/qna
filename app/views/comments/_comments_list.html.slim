@@ -1,0 +1,7 @@
+= content_tag :ul, class: 'comments_list'
+  = render resource.comments
+.comment_form
+  = form_with(model: [resource], url: polymorphic_path([:create_comment, resource]), method: :post, remote: true, data: {type: :json}) do |f|
+    = f.label :comment_body
+    = f.text_area :comment_body
+    = f.submit 'Comment'

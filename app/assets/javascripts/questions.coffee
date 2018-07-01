@@ -25,6 +25,13 @@ $ ->
     $('.question_vote .existing_vote').hide();
     $('.question_vote .new_vote').show();
 
+  $('.question_comments .comment_form').bind 'ajax:success', (e) ->
+    console.log e.detail
+    response = e.detail[0];
+    block_to_add = JST["comment"]({ comment: response.comment, author: response.author })
+    $('.question_comments .comments_list').append(block_to_add)
+    $('textarea[name="question[comment_body]"]').val('')
+
   App.cable.subscriptions.create('QuestionsChannel', {
     connected: ->
       console.log('connected!');
