@@ -33,7 +33,7 @@ $ ->
     console.log e.detail
     response = e.detail[0];
     answer_id=response.comment.commentable_id
-    block_to_add = JST["comment"]({ comment: response.comment, author: response.author })
+    block_to_add = JST["templates/comment"]({ comment: response.comment, author: response.author })
     $('.answer_comments[data-id=' + answer_id + '] .comments_list').append(block_to_add)
     $('.answer_comments[data-id=' + answer_id + '] textarea[name="answer[comment_body]"]').val('')
 
@@ -48,7 +48,7 @@ $ ->
     received: (data) ->
       console.log data
       json_data = JSON.parse(data)
-      block_to_add = JST["answer"]({answer: json_data.answer})
+      block_to_add = JST["templates/answer"]({answer: json_data.answer})
       $('.answers .answers_list').append(block_to_add)
     })
 
@@ -65,7 +65,7 @@ $ ->
     received: (data) ->
       json_data = JSON.parse(data);
       console.log json_data
-      block_to_add = JST["comment"]({ comment: json_data.comment, author: json_data.author });
+      block_to_add = JST["templates/comment"]({ comment: json_data.comment, author: json_data.author });
       console.log block_to_add
       $('.answer_comments[data-id=' + json_data.comment.commentable_id + '] .comments_list').append(block_to_add)
     })

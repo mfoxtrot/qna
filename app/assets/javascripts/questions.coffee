@@ -28,7 +28,7 @@ $ ->
   $('.question_comments .comment_form').bind 'ajax:success', (e) ->
     console.log e.detail
     response = e.detail[0];
-    block_to_add = JST["comment"]({ comment: response.comment, author: response.author })
+    block_to_add = JST["templates/comment"]({ comment: response.comment, author: response.author })
     $('.question_comments .comments_list').append(block_to_add)
     $('textarea[name="question[comment_body]"]').val('')
 
@@ -44,7 +44,7 @@ $ ->
       if (user_id == json_data.question.author_id)
         block_to_add = json_data.authors_template
       else
-        block_to_add = JST["question"]({ question: json_data.question });
+        block_to_add = JST["templates/question"]({ question: json_data.question });
       $('.questions').append(block_to_add)
     })
 
@@ -59,7 +59,7 @@ $ ->
     received: (data) ->
       json_data = JSON.parse(data);
       console.log json_data
-      block_to_add = JST["comment"]({ comment: json_data.comment, author: json_data.author });
+      block_to_add = JST["templates/comment"]({ comment: json_data.comment, author: json_data.author });
       console.log block_to_add
       $('.question_comments .comments_list').append(block_to_add)
       console.log $('.question_comments .comments_list')
