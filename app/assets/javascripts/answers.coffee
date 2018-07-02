@@ -47,8 +47,7 @@ $ ->
 
     received: (data) ->
       console.log data
-      json_data = JSON.parse(data)
-      block_to_add = JST["templates/answer"]({answer: json_data.answer})
+      block_to_add = JST["templates/answer"]({answer: data.answer})
       $('.answers .answers_list').append(block_to_add)
     })
 
@@ -63,9 +62,8 @@ $ ->
     ,
 
     received: (data) ->
-      json_data = JSON.parse(data);
-      console.log json_data
-      block_to_add = JST["templates/comment"]({ comment: json_data.comment, author: json_data.author });
+      console.log data
+      block_to_add = JST["templates/comment"]({ comment: data.comment, author: data.author });
       console.log block_to_add
-      $('.answer_comments[data-id=' + json_data.comment.commentable_id + '] .comments_list').append(block_to_add)
+      $('.answer_comments[data-id=' + data.comment.commentable_id + '] .comments_list').append(block_to_add)
     })

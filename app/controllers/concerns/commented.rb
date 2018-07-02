@@ -39,12 +39,10 @@ module Commented
     return if @comment.errors.any?
     ActionCable.server.broadcast(
       "comments-#{commentable}-#{@comment.commentable.id}",
-      ApplicationController.render(
-        json: {
-          comment: @comment,
-          author: @comment.user
-        }
-      )
+      {
+        comment: @comment,
+        author: @comment.user
+      }
     )
   end
 end

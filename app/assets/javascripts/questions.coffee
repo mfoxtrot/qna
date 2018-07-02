@@ -40,11 +40,13 @@ $ ->
 
     received: (data) ->
       user_id = $('.questions').data('userId');
-      json_data = JSON.parse(data);
-      if (user_id == json_data.question.author_id)
-        block_to_add = json_data.authors_template
+      console.log data
+      #json_data = JSON.parse(data);
+      if (user_id == data.question.author_id)
+        block_to_add = data.authors_template
       else
-        block_to_add = JST["templates/question"]({ question: json_data.question });
+        block_to_add = JST["templates/question"]({ question: data.question });
+      console.log block_to_add
       $('.questions').append(block_to_add)
     })
 
@@ -57,9 +59,8 @@ $ ->
     ,
 
     received: (data) ->
-      json_data = JSON.parse(data);
-      console.log json_data
-      block_to_add = JST["templates/comment"]({ comment: json_data.comment, author: json_data.author });
+      console.log data
+      block_to_add = JST["templates/comment"]({ comment: data.comment, author: data.author });
       console.log block_to_add
       $('.question_comments .comments_list').append(block_to_add)
       console.log $('.question_comments .comments_list')
