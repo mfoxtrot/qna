@@ -1,5 +1,5 @@
 h1 Questions list
-= content_tag(:div, '', class: 'questions', data: {user_id: @user_id } )
+= content_tag(:div, '', class: 'questions', data: {user_id: signed_in? ? current_user.id : 0 } )
   - @questions.each do |question|
-    = render partial: 'questions/question', locals: {question: question, user: current_user} 
+    = render partial: 'questions/question', locals: {question: question, user: current_user}
 p= link_to 'Ask a question', new_question_path

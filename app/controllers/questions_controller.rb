@@ -4,57 +4,52 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find_question, only: [:show, :destroy, :update, :vote_up, :vote_down, :vote_delete]
+  before_action :build_nested_objects, only: [:show]
   after_action :publish_question, only: [:create]
 
   def index
-    @questions = Question.all
-    @user_id = signed_in? ? current_user.id : 0
+    respond_with(@questions = Question.all)
   end
 
   def show
-    @answer = @question.answers.new
-    @answer.attachments.build
-    @vote = @question.vote_by_user(current_user)
-    @comment = @question.comments.new
+    respond_with @question
   end
 
   def new
-    @question = Question.new
-    @question.attachments.build
+    respond_with(@question = Question.new)
   end
 
   def create
-    @question = Question.new(question_params)
-    @question.author = current_user
-    if @question.save
-      flash[:notice] = 'The question was created successfully'
-      redirect_to @question
-    else
-      render :new
-    end
+    respond_with(@question = Question.create(question_params.merge!(author: current_user)))
   end
 
   def update
     if current_user.author_of?(@question)
       @question.update(question_params)
     end
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def destroy
     if current_user.author_of?(@question)
       @question.destroy
-      redirect_to questions_path
-      flash[:notice] = 'Question was successfully deleted'
-    else
-      redirect_to @question
     end
+    respond_with @question
   end
 
   private
 
   def question_params
     params.require(:question).permit(:title, :body, attachments_attributes: [:file])
+  end
+
+  def find_question
+    @question = Question.find(params[:id])
+  end
+
+  def build_nested_objects
+    @answer = @question.answers.new
+    @comment = @question.comments.new
   end
 
   def publish_question
@@ -69,9 +64,5 @@ class QuestionsController < ApplicationController
           )
       }
     )
-  end
-
-  def find_question
-    @question = Question.find(params[:id])
   end
 end

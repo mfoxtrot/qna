@@ -6,7 +6,7 @@
 p= @question.body
 
 .question_vote
-  = render 'votes/vote', vote: @vote, resource: @question
+  = render 'votes/vote', vote: @question.vote_by_user(current_user), resource: @question
 p Attachments
 .attachments
   ul
@@ -27,7 +27,7 @@ br
   = f.text_area :body
   p Attachments
   p
-    = f.fields_for :attachments do |attachment|
+    = f.fields_for :attachments, @answer.attachments.build do |attachment|
       = render 'attachment_fields', f: attachment
     .links
       = link_to_add_association 'add file', f, :attachments, class: 'attachment_links'
