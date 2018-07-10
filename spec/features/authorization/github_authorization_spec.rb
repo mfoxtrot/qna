@@ -8,7 +8,6 @@ feature 'User can be authorized via Github' do
       mock_auth_hash
       click_on 'Sign in with GitHub'
       expect(page).to have_content('Successfully authenticated from Github account')
-
     end
   end
 end
