@@ -5,13 +5,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
-  def new
-    super
-  end
+  # def new
+  #   super
+  # end
 
   # POST /resource
   def create
     super
+    if session[:provider] && session[:uid]
+      unless resource.errors.any?
+        resource.authorizations.create(provider: session[:provider], uid: session[:uid])
+        session[:provider] = nil
+        session[:uid] = nil
+      end
+    end
   end
 
   # GET /resource/edit
@@ -38,12 +45,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:password, :password_confirmation, authorizations_attributes: [:provider, :uid]])
-    add_password_to_params if params[:user].has_key?(:authorizations_attributes)
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:password, :password_confirmation])
+    add_password_to_params if session[:provider] && session[:uid]#params[:user].has_key?(:authorizations_attributes)
   end
 
   def add_password_to_params

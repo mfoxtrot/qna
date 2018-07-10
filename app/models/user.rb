@@ -11,32 +11,40 @@ class User < ApplicationRecord
   has_many :comments
   has_many :authorizations
 
-  accepts_nested_attributes_for :authorizations
-
   def author_of?(obj)
     obj.author_id == self.id
   end
 
   def self.find_for_oauth(auth)
-    provider, uid = auth.provider, auth.uid.to_s
-    authorization = Authorization.where(provider: provider, uid: uid.to_s).first
+    find_user_by_authorization(auth) || find_user_by_email(auth) || create_user_if_not_exists(auth)
+  end
+
+  def self.find_user_by_authorization(auth)
+    authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
     return authorization.user if authorization
-    return User.new unless auth.info.has_key?(:email)
-    email = auth.info[:email]
-    user = User.where(email: email).first
-    if user
-      user.create_authorization(provider, uid)
-      return user
-    else
-      password = Devise.friendly_token[0,20]
-      user = User.create!(email: email, password: password, password_confirmation: password, confirmed_at: Time.now)
-      user.create_authorization(provider, uid)
-      return user
+  end
+
+  def self.find_user_by_email(auth)
+    if auth.info.has_key?(:email)
+      user = User.where(email: auth.info[:email]).first
+      if user
+        user.create_authorization(auth)
+        user
+      end
     end
   end
 
-  def create_authorization(provider, uid)
-    self.authorizations.create(provider: provider, uid: uid)
+  def self.create_user_if_not_exists(auth)
+    if auth.info.has_key?(:email)
+      provider, uid, email = auth.provider, auth.uid.to_s, auth.info[:email]
+      password = Devise.friendly_token[0,20]
+      user = User.create!(email: email, password: password, password_confirmation: password, confirmed_at: Time.now)
+      user.create_authorization(auth)
+      user
+    end
   end
 
+  def create_authorization(auth)
+    self.authorizations.create(provider: auth.provider, uid: auth.uid.to_s)
+  end
 end

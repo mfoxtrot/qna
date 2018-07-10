@@ -8,12 +8,7 @@
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
   </div>
 
-  <% if params.has_key?(:provider) && params.has_key?(:uid) %>
-    <%= f.fields_for :authorizations, resource.authorizations.build do |authorization| %>
-      <%= authorization.hidden_field :provider, value: params[:provider] %>
-      <%= authorization.hidden_field :uid, value: params[:uid] %>
-    <% end %>
-  <% else %>
+  <% unless session[:provider] && session[:uid] %>
     <div class="field">
       <%= f.label :password %>
       <% if @minimum_password_length %>
@@ -33,6 +28,6 @@
   </div>
 <% end %>
 
-<% unless params.has_key?(:provider) %>
+<% unless session[:provider] && session[:uid] %>
   <%= render "devise/shared/links" %>
 <% end %>
