@@ -11,13 +11,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
+    provider, uid = session['devise.provider'], session['devise.uid'] if session_with_provider_params?
     super
-    if session[:provider] && session[:uid]
-      unless resource.errors.any?
-        resource.authorizations.create(provider: session[:provider], uid: session[:uid])
-        session[:provider] = nil
-        session[:uid] = nil
-      end
+    if provider && uid && !resource.errors.any?
+      resource.authorizations.create(provider: provider, uid: uid)
     end
   end
 
@@ -50,13 +47,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
     devise_parameter_sanitizer.permit(:sign_up, keys: [:password, :password_confirmation])
-    add_password_to_params if session[:provider] && session[:uid]#params[:user].has_key?(:authorizations_attributes)
+    add_password_to_params if session_with_provider_params?
   end
 
   def add_password_to_params
     fake_password = Devise.friendly_token[0,20]
     params[:user][:password] = fake_password
     params[:user][:password_confirmation] = fake_password
+  end
+
+  def session_with_provider_params?
+    session.has_key?('devise.provider') && session.has_key?('devise.uid')
   end
 
   # If you have extra params to permit, append them to the sanitizer.

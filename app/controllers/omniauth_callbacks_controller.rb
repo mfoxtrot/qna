@@ -14,8 +14,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       sign_in_and_redirect user, event: :authentication
       set_flash_message(:notice, :success, kind: action_name.capitalize) if is_navigational_format?
     else
-      session[:provider] = oauth_params.provider
-      session[:uid] = oauth_params.uid.to_s
+      session['devise.provider'] = oauth_params.provider
+      session['devise.uid'] = oauth_params.uid.to_s
       redirect_to new_user_registration_path
     end
   end
