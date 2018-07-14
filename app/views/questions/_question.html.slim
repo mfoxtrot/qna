@@ -1,14 +1,13 @@
 div
   h3= question.title
   p= question.body
-  - unless user.nil?
-    - if user.author_of?(question)
-      = link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
-      p
-        = form_with(model: question, remote: true, html: { id: "edit-question-#{question.id}", class: 'edit-question' }) do |f|
-          = f.label :title, 'Title'
-          = f.text_field :title
-          br
-          = f.label :body, 'Body'
-          = f.text_area :body
-          = f.submit 'Save'
+  - if user_can_edit_question
+    = link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
+    p
+      = form_with(model: question, remote: true, html: { id: "edit-question-#{question.id}", class: 'edit-question' }) do |f|
+        = f.label :title, 'Title'
+        = f.text_field :title
+        br
+        = f.label :body, 'Body'
+        = f.text_area :body
+        = f.submit 'Save'

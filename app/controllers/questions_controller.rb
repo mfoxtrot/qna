@@ -62,7 +62,7 @@ class QuestionsController < ApplicationController
         question: @question,
         authors_template: ApplicationController.render(
           partial: 'questions/question',
-          locals: { question: @question, user: @question.author }
+          locals: { question: @question, user_can_edit_question: true }
           )
       }
     )

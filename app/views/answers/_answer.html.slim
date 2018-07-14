@@ -13,14 +13,14 @@
 
     - if answer.best?
       p The best answer
-    - if user_signed_in?
-      - if current_user.author_of?(answer.question) && !answer.best?
-        = link_to 'Mark as the best', set_as_the_best_answer_path(answer), method: :post, remote: true
-      - if current_user.author_of?(answer)
-        = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
-        = link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
-        = content_tag :p, class: 'edit_answer'
-          = form_with(model: answer, remote: true, html: { id: "edit-answer-#{answer.id}", class: 'edit-answer' }) do |f|
-            = f.label :body, 'Answer'
-            = f.text_area :body
-            = f.submit 'Save'
+    - if can?(:set_as_the_best, answer) && !answer.best?
+      = link_to 'Mark as the best', set_as_the_best_answer_path(answer), method: :post, remote: true
+    - if can?(:destroy, answer)
+      = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
+    - if can?(:edit, answer)
+      = link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+      = content_tag :p, class: 'edit_answer'
+        = form_with(model: answer, remote: true, html: { id: "edit-answer-#{answer.id}", class: 'edit-answer' }) do |f|
+          = f.label :body, 'Answer'
+          = f.text_area :body
+          = f.submit 'Save'
