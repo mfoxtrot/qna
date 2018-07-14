@@ -25,9 +25,7 @@ feature 'Only authenticated user can add a question', %q{
 
   scenario 'Non-authenticated user could not create a question' do
     visit questions_path
-    click_on 'Ask a question'
-
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).not_to have_link 'Ask a question'
   end
 
   scenario 'Authenticated user recieves an error using invalid params' do

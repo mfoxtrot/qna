@@ -105,13 +105,6 @@ RSpec.describe QuestionsController, type: :controller do
         sign_in(user)
         expect { delete_action }.to_not change(Question, :count)
       end
-
-      it 'redirects to question#show' do
-        question
-        sign_in(user)
-        delete_action
-        expect(response).to redirect_to question_path(question)
-      end
     end
 
   end

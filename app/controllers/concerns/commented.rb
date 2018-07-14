@@ -5,7 +5,6 @@ module Commented
     before_action :set_commented, only: [:create_comment]
     after_action :publish_comment, only: [:create_comment]
 
-    authorize_resource
   end
 
   def create_comment

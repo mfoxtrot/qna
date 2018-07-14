@@ -4,7 +4,6 @@ module Voted
    included do
      before_action :set_voted, only: [:vote_up, :vote_down, :vote_delete]
 
-     authorize_resource
    end
 
    def vote_up
