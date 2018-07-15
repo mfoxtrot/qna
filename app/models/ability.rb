@@ -27,11 +27,11 @@ class Ability
 
     can :create, [Question, Answer]
 
-    can :update, Question, author: user
-    can :update, Answer, author: user
+    can :update, Question, author_id: user.id
+    can :update, Answer, author_id: user.id
 
-    can :destroy, Question, author: user
-    can :destroy, Answer, author: user
+    can :destroy, Question, author_id: user.id
+    can :destroy, Answer, author_id: user.id
 
     can :create_comment, [Question, Answer]
 
@@ -39,6 +39,6 @@ class Ability
 
     can [:vote_up, :vote_down], [Question, Answer] { |votable| votable.author_id != user.id }
 
-    can :vote_delete, [Question, Answer] { |votable| votable.votes.exists?(user: user) }
+    can :vote_delete, [Question, Answer] { |votable| votable.votes.exists?(user_id: user.id) }
   end
 end
