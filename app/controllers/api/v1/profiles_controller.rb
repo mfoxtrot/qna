@@ -7,6 +7,10 @@ class Api::V1::ProfilesController < ApplicationController
     respond_with current_resource_ownwer
   end
 
+  def list
+    respond_with User.where('id!=?', current_resource_ownwer.id)
+  end
+
   private
 
   def current_resource_ownwer
