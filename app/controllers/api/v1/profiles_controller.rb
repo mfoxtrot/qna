@@ -8,7 +8,7 @@ class Api::V1::ProfilesController < ApplicationController
   end
 
   def list
-    respond_with User.where('id!=?', current_resource_ownwer.id)
+    respond_with User.where.not('id=?', current_resource_ownwer.id)
   end
 
   private
