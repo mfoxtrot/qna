@@ -37,6 +37,10 @@ Rails.application.routes.draw do
         get :me, on: :collection
         get :list, on: :collection
       end
+
+      resource :questions do
+        get :index, on: :collection
+      end
     end
   end
 end

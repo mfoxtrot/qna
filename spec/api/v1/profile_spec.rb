@@ -65,17 +65,17 @@ describe 'Profile API' do
       end
 
       it 'contains N-1 records' do
-        expect(response.body).to have_json_size(User.all.count-1)
+        expect(response.body).to have_json_size(User.all.count-1).at_path('profiles')
       end
 
       it 'does not contain current_user profile' do
-        expect(response.body).to_not include_json(me.to_json)
+        expect(response.body).to_not include_json(me.to_json).at_path('profiles')
       end
 
 
       %w(id email created_at updated_at admin).each do |attr|
-        it "each profile contains #{attr}" do
-          JSON.parse(response.body).each do |user|
+        it "profile contains #{attr}" do
+          JSON.parse(response.body)["profiles"].each do |user|
             expect(user).to have_key(attr)
           end
         end
@@ -83,7 +83,7 @@ describe 'Profile API' do
 
       %w(password encrypted_password).each do |attr|
         it "each profile doesnt contain #{attr}" do
-          JSON.parse(response.body).each do |user|
+          JSON.parse(response.body)["profiles"].each do |user|
             expect(user).not_to have_key(attr)
           end
         end
