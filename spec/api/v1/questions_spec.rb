@@ -108,4 +108,39 @@ describe 'Question API' do
       end
     end
   end
+
+  describe 'POST /v1/questions' do
+    let(:question_params) { attributes_for(:question) }
+
+    context 'Unauthorized' do
+      it 'returns 401 status if there is no access_token' do
+        post '/api/v1/questions', params: {format: :json, question: question_params }
+        expect(response.status).to eq 401
+      end
+
+      it 'returns 401 status if access_token is invalid' do
+        post '/api/v1/questions', params: {format: :json, access_token: '12345', question: question_params }
+        expect(response.status).to eq 401
+      end
+    end
+
+    context 'Authorized' do
+      let(:me) { create(:user) }
+      let(:access_token) { create(:access_token, resource_owner_id: me.id)}
+      let(:post_valid_params) { post '/api/v1/questions', params: { format: :json, access_token: access_token.token, question: question_params.merge!(author_id: me.id) }}
+      let(:post_invalid_params) { post '/api/v1/questions', params: { format: :json, access_token: access_token.token, question: question_params }}
+
+      context 'with valid params' do
+        it 'creates question if passing valid params' do
+          expect { post_valid_params }.to change(Question, :count).by(1)
+        end
+      end
+
+      context 'with invalid params' do
+        it "doesn't create a question" do
+          expect { post_invalid_params }.not_to change(Question, :count)
+        end
+      end
+    end
+  end
 end
