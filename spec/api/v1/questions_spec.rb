@@ -1,6 +1,6 @@
 require 'features_helper'
 
-describe 'Profile API' do
+describe 'Question API' do
   describe 'GET /v1/questions' do
     context 'unauthorized' do
 
