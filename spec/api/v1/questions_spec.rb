@@ -127,8 +127,8 @@ describe 'Question API' do
     context 'Authorized' do
       let(:me) { create(:user) }
       let(:access_token) { create(:access_token, resource_owner_id: me.id)}
-      let(:post_valid_params) { post '/api/v1/questions', params: { format: :json, access_token: access_token.token, question: question_params.merge!(author_id: me.id) }}
-      let(:post_invalid_params) { post '/api/v1/questions', params: { format: :json, access_token: access_token.token, question: question_params }}
+      let(:post_valid_params) { post '/api/v1/questions', params: { format: :json, access_token: access_token.token, question: question_params }}
+      let(:post_invalid_params) { post '/api/v1/questions', params: { format: :json, access_token: access_token.token, question: question_params.except!(:body) }}
 
       context 'with valid params' do
         it 'creates question if passing valid params' do

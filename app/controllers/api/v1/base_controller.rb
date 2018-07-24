@@ -8,4 +8,8 @@ class Api::V1::BaseController < ApplicationController
   def current_resource_ownwer
     @current_resource_ownwer ||= User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
   end
+
+  def current_user
+    current_resource_ownwer
+  end
 end

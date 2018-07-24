@@ -1,7 +1,7 @@
 require 'features_helper'
 
 describe 'Answers API' do
-  let(:question) { create(:question_with_answers) }
+  let!(:question) { create(:question_with_answers) }
   let!(:answer) { question.answers.first }
   let(:me) { create(:user)}
   let(:access_token) { create(:access_token, resource_owner_id: me.id)}
@@ -22,7 +22,7 @@ describe 'Answers API' do
 
     context 'authorized' do
 
-      context 'api/v1/questions/{id}/asnwers' do
+      context 'api/v1/questions/{id}/answers' do
 
         before {get "/api/v1/questions/#{question.id}/answers", params: {format: :json, access_token: access_token.token}}
 
@@ -34,7 +34,7 @@ describe 'Answers API' do
           expect(response.body).to have_json_size(question.answers.count).at_path('answers')
         end
 
-        %w(id body question_id created_at updated_at author_id best rating).each do |attr|
+        %w(id body question_id author_id best rating created_at updated_at).each do |attr|
           it "question object has #{attr}" do
             expect(response.body).to be_json_eql(answer.send(attr).to_json).at_path("answers/0/#{attr}")
           end
@@ -98,8 +98,8 @@ describe 'Answers API' do
   end
 
   describe 'POST /v1/questions/{id}/answers' do
-    let(:answer_params) { attributes_for(:answer).merge!(author_id: me.id)}
-    let(:invalid_params) { attributes_for(:answer)}
+    let(:answer_params) { attributes_for(:answer)}
+    let(:invalid_params) { attributes_for(:invalid_answer)}
 
     context 'Unauthorized' do
       it 'returns 401 status if there is no access_token' do
