@@ -48,7 +48,7 @@ gem 'omniauth-github'
 gem 'omniauth-meetup'
 gem 'cancancan'
 gem 'doorkeeper', '4.2.6'
-gem 'active_model_serializers', '~>0.9.3'
+gem 'active_model_serializers', '~>0.10.0'
 gem 'oj'
 gem 'oj_mimic_json'
 

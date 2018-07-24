@@ -38,9 +38,7 @@ Rails.application.routes.draw do
         get :list, on: :collection
       end
 
-      resource :questions do
-        get :index, on: :collection
-      end
+      resources :questions, only: [:index, :show]
     end
   end
 end
