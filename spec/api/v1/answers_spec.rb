@@ -96,4 +96,38 @@ describe 'Answers API' do
       end
     end
   end
+
+  describe 'POST /v1/questions/{id}/answers' do
+    let(:answer_params) { attributes_for(:answer).merge!(author_id: me.id)}
+    let(:invalid_params) { attributes_for(:answer)}
+
+    context 'Unauthorized' do
+      it 'returns 401 status if there is no access_token' do
+        post "/api/v1/questions/#{question.id}/answers", params: {format: :json, question: answer_params }
+        expect(response.status).to eq 401
+      end
+
+      it 'returns 401 status if access_token is invalid' do
+        post "/api/v1/questions/#{question.id}/answers", params: {format: :json, access_token: '12345', question: answer_params }
+        expect(response.status).to eq 401
+      end
+    end
+
+    context 'Authorized' do
+      let(:post_valid_params) { post "/api/v1/questions/#{question.id}/answers", params: {format: :json, access_token: access_token.token, answer: answer_params }}
+      let(:post_invalid_params) { post "/api/v1/questions/#{question.id}/answers", params: {format: :json, access_token: access_token.token, answer: invalid_params }}
+
+      context 'valid params' do
+        it 'creates new answer in question.answer collection' do
+          expect { post_valid_params }.to change(question.answers, :count).by(1)
+        end
+      end
+
+      context 'invalid_params' do
+        it "doesn't create new answer" do
+          expect { post_invalid_params }.not_to change(Answer, :count)
+        end
+      end
+    end
+  end
 end
