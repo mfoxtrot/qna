@@ -16,6 +16,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
 
   def create
     @answer = @question.answers.create(answer_params)
+    @answer.author_id = current_resource_ownwer.id
     if @answer.save
       respond_with @answer, include: []
     end
@@ -32,6 +33,6 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   def answer_params
-    params.require(:answer).permit(:body).merge!(author_id: current_resource_ownwer.id)
+    params.require(:answer).permit(:body)
   end
 end

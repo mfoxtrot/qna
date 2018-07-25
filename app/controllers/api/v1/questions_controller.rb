@@ -15,6 +15,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def create
     @question = Question.create(question_params)
+    @question.author_id = current_resource_ownwer.id
     if @question.save
       respond_with @question, include: []
     end
@@ -23,6 +24,6 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body).merge!(author_id: current_resource_ownwer.id)
+    params.require(:question).permit(:title, :body)
   end
 end

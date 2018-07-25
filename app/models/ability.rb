@@ -40,5 +40,7 @@ class Ability
     can [:vote_up, :vote_down], [Question, Answer] { |votable| votable.author_id != user.id }
 
     can :vote_delete, [Question, Answer] { |votable| votable.votes.exists?(user_id: user.id) }
+
+    can [:me, :list], User
   end
 end

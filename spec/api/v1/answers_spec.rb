@@ -2,7 +2,7 @@ require 'features_helper'
 
 describe 'Answers API' do
   let!(:question) { create(:question_with_answers) }
-  let!(:answer) { question.answers.first }
+  let(:answer) { question.answers.first }
   let(:me) { create(:user)}
   let(:access_token) { create(:access_token, resource_owner_id: me.id)}
 
