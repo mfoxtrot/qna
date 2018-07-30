@@ -7,18 +7,9 @@ describe 'Answers API' do
   let(:access_token) { create(:access_token, resource_owner_id: me.id)}
 
   describe 'GET /v1/questions/{id}/answers' do
-    context 'unauthorized' do
 
-      it 'returns 401 status if there is no access_token' do
-        get "/api/v1/questions/#{question.id}/answers", params: {format: :json}
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        get '/api/v1/questions', params: {format: :json, access_token: '12345'}
-        expect(response.status).to eq 401
-      end
-    end
+    let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
 
@@ -45,17 +36,8 @@ describe 'Answers API' do
 
   describe 'GET /v1/answers/{id}' do
 
-    context 'Unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        get "/api/v1/answers/#{answer.id}", params: {format: :json}
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        get "/api/v1/answers/#{answer.id}", params: {format: :json, access_token: '12345'}
-        expect(response.status).to eq 401
-      end
-    end
+    let(:api_path) { "/api/v1/answers/#{answer.id}" }
+    it_behaves_like 'API Authenticable'
 
     context 'Authorized' do
       before {get "/api/v1/answers/#{answer.id}", params: {format: :json, access_token: access_token.token}}
@@ -101,17 +83,10 @@ describe 'Answers API' do
     let(:answer_params) { attributes_for(:answer)}
     let(:invalid_params) { attributes_for(:invalid_answer)}
 
-    context 'Unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        post "/api/v1/questions/#{question.id}/answers", params: {format: :json, question: answer_params }
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        post "/api/v1/questions/#{question.id}/answers", params: {format: :json, access_token: '12345', question: answer_params }
-        expect(response.status).to eq 401
-      end
-    end
+    let(:method_name) { :post }
+    let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
+    let(:request_params) { {question: answer_params} }
+    it_behaves_like 'API Authenticable'
 
     context 'Authorized' do
       let(:post_valid_params) { post "/api/v1/questions/#{question.id}/answers", params: {format: :json, access_token: access_token.token, answer: answer_params }}
@@ -129,5 +104,11 @@ describe 'Answers API' do
         end
       end
     end
+  end
+
+  def do_request(options = {})
+    method_name ||= :get
+    request_params ||= {}
+    send method_name, api_path, params: {format: :json}.merge(options).merge(request_params)
   end
 end

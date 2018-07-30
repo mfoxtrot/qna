@@ -2,18 +2,9 @@ require 'features_helper'
 
 describe 'Question API' do
   describe 'GET /v1/questions' do
-    context 'unauthorized' do
 
-      it 'returns 401 status if there is no access_token' do
-        get '/api/v1/questions', params: {format: :json}
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        get '/api/v1/questions', params: {format: :json, access_token: '12345'}
-        expect(response.status).to eq 401
-      end
-    end
+    let(:api_path) { '/api/v1/questions' }
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let(:me) { create(:user)}
@@ -55,17 +46,9 @@ describe 'Question API' do
   end
 
   describe 'GET /v1/questions/{id}' do
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        get '/api/v1/questions/1', params: {format: :json}
-        expect(response.status).to eq 401
-      end
 
-      it 'returns 401 status if access_token is invalid' do
-        get '/api/v1/questions/1', params: {format: :json, access_token: '12345'}
-        expect(response.status).to eq 401
-      end
-    end
+    let(:api_path) { '/api/v1/questions/1' }
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let(:me) { create(:user)}
@@ -112,17 +95,10 @@ describe 'Question API' do
   describe 'POST /v1/questions' do
     let(:question_params) { attributes_for(:question) }
 
-    context 'Unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        post '/api/v1/questions', params: {format: :json, question: question_params }
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        post '/api/v1/questions', params: {format: :json, access_token: '12345', question: question_params }
-        expect(response.status).to eq 401
-      end
-    end
+    let(:method_name) { :post }
+    let(:api_path) { '/api/v1/questions' }
+    let(:request_params) { {question: question_params} }
+    it_behaves_like 'API Authenticable'
 
     context 'Authorized' do
       let(:me) { create(:user) }
@@ -142,5 +118,11 @@ describe 'Question API' do
         end
       end
     end
+  end
+
+  def do_request(options = {})
+    method_name ||= :get
+    request_params ||= {}
+    send method_name, api_path, params: {format: :json}.merge(options).merge(request_params)
   end
 end
