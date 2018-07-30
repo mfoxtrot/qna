@@ -40,6 +40,9 @@ describe 'Answers API' do
     it_behaves_like 'API Authenticable'
 
     context 'Authorized' do
+
+      it_behaves_like 'API Commentable'
+
       before {get "/api/v1/answers/#{answer.id}", params: {format: :json, access_token: access_token.token}}
 
       it 'returns 200 status' do
@@ -49,22 +52,6 @@ describe 'Answers API' do
       %w(id body question_id created_at updated_at author_id best rating).each do |attr|
         it "question object has #{attr}" do
           expect(response.body).to be_json_eql(answer.send(attr).to_json).at_path("answer/#{attr}")
-        end
-      end
-
-      context 'comments' do
-
-        let!(:comment) { create(:answer_comment, commentable: answer)}
-        before {get "/api/v1/answers/#{answer.id}", params: {format: :json, access_token: access_token.token}}
-
-        it 'has a list of comments' do
-          expect(response.body).to have_json_size(answer.comments.count).at_path('answer/comments')
-        end
-
-        %w(id body user_id created_at updated_at).each do |attr|
-          it "comment object has #{attr}" do
-            expect(response.body).to be_json_eql(comment.send(attr).to_json).at_path("answer/comments/0/#{attr}")
-          end
         end
       end
 
@@ -110,5 +97,9 @@ describe 'Answers API' do
     method_name ||= :get
     request_params ||= {}
     send method_name, api_path, params: {format: :json}.merge(options).merge(request_params)
+  end
+
+  def create_comment
+    create(:answer_comment, commentable: answer)
   end
 end
