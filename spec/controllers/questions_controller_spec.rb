@@ -143,12 +143,6 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'User can make a vote' do
-
-    let!(:votable) { create(:question)}
-    let!(:user) { create(:user)}
-    let!(:votable_with_vote) { create(:question)}
-    let!(:vote) { create(:vote, user: user, votable: votable_with_vote, value: 1)}
-
-    it_behaves_like 'Votable controller'
+    it_behaves_like 'Votable controller', :question
   end
 end

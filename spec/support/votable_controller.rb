@@ -1,4 +1,10 @@
-shared_examples_for 'Votable controller' do
+shared_examples_for 'Votable controller' do |votable_type|
+
+  let!(:votable) { create(votable_type)}
+  let!(:user) { create(:user)}
+  let!(:votable_with_vote) { create(votable_type)}
+  let!(:vote) { create(:vote, user: user, votable: votable_with_vote, value: 1)}
+
 
   let(:vote_up_action) { post :vote_up, params: {id: votable}, format: :json }
   let(:vote_down_action) { post :vote_down, params: {id: votable}, format: :json }
