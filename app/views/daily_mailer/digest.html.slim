@@ -1,0 +1,7 @@
+h1 Daily#digest
+ul
+- @questions.each do |question|
+  li
+    h5
+      = "#{question.author.name} asks:"
+    p = "#{question.title}"
