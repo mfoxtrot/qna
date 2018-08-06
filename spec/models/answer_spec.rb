@@ -12,4 +12,8 @@ RSpec.describe Answer, type: :model do
   it_behaves_like 'votable'
   it_behaves_like 'commentable'
 
+  it 'sends email to the question author when new answer appears' do
+    expect(NotificationMailer).to receive(:new_answer).and_call_original
+    create(:answer)
+  end
 end
