@@ -12,12 +12,12 @@ class Answer < ApplicationRecord
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank
 
-  after_create_commit :send_notice_to_question_author
+  after_create_commit :send_notification_to_question_subscribers
 
   private
 
-  def send_notice_to_question_author
-    NotificationMailer.new_answer(self).deliver_later
+  def send_notification_to_question_subscribers
+    NewAnswerNotificationJob.perform_later(self)
   end
 
 end

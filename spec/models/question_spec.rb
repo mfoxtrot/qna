@@ -47,4 +47,13 @@ RSpec.describe Question, type: :model do
       expect(question.answers[0]).to eq best_answer
     end
   end
+
+  describe 'Author subscribes to question answers' do
+    let(:user) { create(:user)}
+    let(:question) { create(:question, author: user)}
+
+    it 'adds question to users subscriptions' do
+      expect { question }.to change(user.subscriptions, :count).by(1)
+    end
+  end
 end

@@ -5,9 +5,9 @@ class NotificationMailer < ApplicationMailer
   #
   #   en.notification_mailer.new_answer.subject
   #
-  def new_answer(answer)
+  def new_answer(answer, user)
     @greeting = "Hi"
 
-    mail to: answer.question.author.email
+    mail to: user.email
   end
 end

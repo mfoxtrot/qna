@@ -11,11 +11,19 @@ class Question < ApplicationRecord
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank
 
+  after_create :add_subscription_for_author
+
   def set_the_best_answer(answer)
     Question.transaction do
       answers.update_all(best: false)
       answer.update!(best: true)
     end
+  end
+
+  private
+
+  def add_subscription_for_author
+    author.subscriptions << self
   end
 
 end
