@@ -42,5 +42,9 @@ class Ability
     can :vote_delete, [Question, Answer] { |votable| votable.votes.exists?(user_id: user.id) }
 
     can [:me, :list], User
+
+    can :subscribe, Question
+    cannot :subscribe, Question, id: user.subscriptions.pluck(:id)
+    can :unsubscribe, Question, id: user.subscriptions.pluck(:id)
   end
 end

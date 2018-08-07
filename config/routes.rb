@@ -20,6 +20,10 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: [:votable, :commentable], defaults: { commentable: 'question'} do
+    member do
+      patch :subscribe
+      patch :unsubscribe
+    end
     resources :answers, concerns: [:votable, :commentable], defaults: { commentable: 'answer'}, shallow: true do
       member do
         post :set_as_the_best

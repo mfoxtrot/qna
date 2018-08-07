@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :votes
   has_many :comments
   has_many :authorizations
+  has_and_belongs_to_many :subscriptions, class_name: "Question"
 
   def author_of?(obj)
     obj.author_id == self.id

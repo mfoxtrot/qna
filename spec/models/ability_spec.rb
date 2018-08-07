@@ -78,5 +78,11 @@ RSpec.describe Ability do
       should_not be_able_to :vote_delete, another_answer
     }
 
+    it { should be_able_to :subscribe, question }
+    it {
+      user.subscriptions << question
+      should be_able_to :unsubscribe, question
+    }
+
   end
 end

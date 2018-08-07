@@ -32,6 +32,18 @@ $ ->
     $('.question_comments .comments_list').append(block_to_add)
     $('textarea[name="question[comment_body]"]').val('')
 
+  $('.subscriptions').bind 'ajax:success', (e) ->
+    console.log e.detail
+    response = e.detail[0];
+    $('.subscription_message').html('<p>' + response.message + '</p>');
+
+    if (response.subscription_exists)
+      link_label = 'Unsubscribe'
+      $('.subscription_link').html('<a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="' + response.link + '">' + link_label + '</a>');
+    else
+      link_label = 'Subscribe'
+      $('.subscription_link').html('<a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="' + response.link + '">' + link_label + '</a>');
+
   App.cable.subscriptions.create('QuestionsChannel', {
     connected: ->
       console.log('connected!');

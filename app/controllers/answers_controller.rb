@@ -3,8 +3,8 @@ class AnswersController < ApplicationController
   include Commented
 
   before_action :authenticate_user!
-  before_action :find_question, only: [:new, :create]
-  before_action :find_answer, only: [:destroy, :update, :set_as_the_best]
+  before_action :find_question, only: %i[new create]
+  before_action :find_answer, only: %i[destroy update set_as_the_best]
   after_action :publish_answer, only: :create
 
   authorize_resource

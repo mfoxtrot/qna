@@ -1,5 +1,12 @@
 = content_tag :div, class: 'question', data: {question_id: @question.id }
   p= @question.title
+  .subscriptions
+    .subscription_message
+    .subscription_link
+      - if can?(:subscribe, @question)
+        = link_to 'Subscribe', subscribe_question_path(@question), method: :patch, remote: true, data: {type: :json}
+      - if can?(:unsubscribe, @question)
+        = link_to 'Unsubscribe', unsubscribe_question_path(@question), method: :patch, remote: true, data: {type: :json}
 - if can?(:destroy, @question)
   = link_to 'Delete question', question_path(@question), method: :delete
 

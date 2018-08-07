@@ -2,10 +2,10 @@ class QuestionsController < ApplicationController
   include Voted
   include Commented
 
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_question, only: [:show, :destroy, :update, :vote_up, :vote_down, :vote_delete]
-  before_action :build_nested_objects, only: [:show]
-  after_action :publish_question, only: [:create]
+  before_action :authenticate_user!, except: %i[index show]
+  before_action :find_question, only: %i[show destroy update vote_up vote_down vote_delete subscribe unsubscribe]
+  before_action :build_nested_objects, only: :show
+  after_action :publish_question, only: :create
 
   authorize_resource
 
@@ -37,6 +37,24 @@ class QuestionsController < ApplicationController
       @question.destroy
     end
     respond_with @question
+  end
+
+  def subscribe
+    current_user.subscriptions << @question unless current_user.subscriptions.exists?(@question.id)
+    respond_to do |format|
+      format.json {
+        render json: { message: "You have successfully subscribed to the question", subscription_exists: true, link: unsubscribe_question_path(@question) }
+      }
+    end
+  end
+
+  def unsubscribe
+    current_user.subscriptions.delete(@question) if current_user.subscriptions.exists?(@question.id)
+    respond_to do |format|
+      format.json {
+        render json: {message: "You have successfully unsubscribed from the question", subscription_exists: false, link: subscribe_question_path(@question) }
+      }
+    end
   end
 
   private

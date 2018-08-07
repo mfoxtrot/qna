@@ -5,6 +5,7 @@ RSpec.describe Question, type: :model do
     it { should have_many(:answers).dependent(:destroy) }
     it { should belong_to(:author) }
     it { should have_many(:attachments).dependent(:destroy) }
+    it { should have_and_belong_to_many(:subscribers)}
   end
 
   describe 'Validations' do

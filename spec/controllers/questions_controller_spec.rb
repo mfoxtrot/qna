@@ -145,4 +145,53 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'User can make a vote' do
     it_behaves_like 'Votable controller', :question
   end
+
+  describe 'User can subscribe to a question' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question) }
+    let(:action) { patch :subscribe, params: { id: question} , format: :json }
+
+    context 'Non-authenticated user' do
+      it 'is not able to subscribe to a question' do
+        expect { action }.not_to change(user.subscriptions, :count)
+      end
+    end
+
+    context 'Authenticated user' do
+      before(:each) do
+        sign_in(user)
+      end
+      it 'is able to subscribe to a question' do
+        expect { action }.to change(user.subscriptions, :count).by(1)
+      end
+
+      it 'cannot subscribe to a question twice' do
+        user.subscriptions << question
+        expect { action }.not_to change(user.subscriptions, :count)
+      end
+    end
+  end
+
+  describe 'Subscribed user can unsubscribe to a question' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question) }
+    before(:each) do
+      user.subscriptions << question
+    end
+
+    let(:action) { patch :unsubscribe, params: { id: question} , format: :json }
+
+    context 'Non-authenticated user' do
+      it 'is not able to unsubscribe to a question' do
+        expect { action }.not_to change(user.subscriptions, :count)
+      end
+    end
+
+    context 'Authenticated user' do
+      it 'is able to unsubscribe to a question' do
+        sign_in(user)
+        expect { action }.to change(user.subscriptions, :count).by(-1)
+      end
+    end
+  end
 end

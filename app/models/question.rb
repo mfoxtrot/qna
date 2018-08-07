@@ -5,6 +5,7 @@ class Question < ApplicationRecord
   has_many :answers, dependent: :destroy
   belongs_to :author, class_name: 'User'
   has_many :attachments, as: :attachable, dependent: :destroy
+  has_and_belongs_to_many :subscribers, class_name: "User"
 
   validates :title, :body, presence: true
 
