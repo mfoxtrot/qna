@@ -43,8 +43,6 @@ class Ability
 
     can [:me, :list], User
 
-    can :subscribe, Question
-    cannot :subscribe, Question, id: user.subscriptions.pluck(:id)
-    can :unsubscribe, Question, id: user.subscriptions.pluck(:id)
+    can [:create, :destroy], Subscription
   end
 end

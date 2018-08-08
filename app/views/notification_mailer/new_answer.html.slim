@@ -1,2 +1,6 @@
-h1 Notification#new_answer
-p = @greeting + ", find me in app/views/notification_mailer/new_answer.html.slim"
+h1 Notification
+p = @greeting
+p= "#{@user.email} has just answered your question: #{@answer.body}"
+p= "You have received this message because you are subscribed to the question '#{@answer.question.title}'"
+p= "If you want to unsubscribe from the answers, please visit the question page:"
+a href=="#{question_url(@answer.question)}"

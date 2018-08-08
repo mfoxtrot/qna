@@ -29,6 +29,7 @@ RSpec.describe Ability do
     let(:vote_for_another_question) { another_question.votes.create(user: another_user, value: 1)}
     let(:another_answer) { create(:answer)}
     let(:vote_for_another_answer) { another_answer.votes.create(user: another_user, value: 1)}
+    let(:subscription) { create(:subscription)}
 
     it { should_not be_able_to :manage, :all }
     it { should be_able_to :read, :all }
@@ -78,10 +79,8 @@ RSpec.describe Ability do
       should_not be_able_to :vote_delete, another_answer
     }
 
-    it { should be_able_to :subscribe, another_question }
-    it {
-      should be_able_to :unsubscribe, question
-    }
+    it { should be_able_to :create, subscription }
+    it { should be_able_to :destroy, subscription }
 
   end
 end

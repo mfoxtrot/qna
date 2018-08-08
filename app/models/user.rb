@@ -10,7 +10,8 @@ class User < ApplicationRecord
   has_many :votes
   has_many :comments
   has_many :authorizations
-  has_and_belongs_to_many :subscriptions, class_name: "Question"
+  has_many :subscriptions
+  has_many :subscribed_questions, through: :subscriptions, source: :question
 
   def author_of?(obj)
     obj.author_id == self.id
@@ -47,5 +48,13 @@ class User < ApplicationRecord
 
   def create_authorization(auth)
     self.authorizations.create(provider: auth.provider, uid: auth.uid.to_s)
+  end
+
+  def subscribed_to?(question)
+    self.subscribed_questions.exists?(question.id)
+  end
+
+  def find_subscription_by_question(question)
+    self.subscriptions.where(question: question).first
   end
 end

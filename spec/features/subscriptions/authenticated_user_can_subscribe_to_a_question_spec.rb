@@ -7,9 +7,8 @@ feature 'Authenticated user can subscribe to a question' do
   context 'Non-authenticated user' do
     scenario 'is not able to subscribe to a question' do
       visit question_path(question)
-      within(".subscriptions") do
-        expect(page).not_to have_link 'Subscribe'
-        expect(page).not_to have_link 'Unsubscribe'
+      within(".question") do
+        expect(page).not_to have_css('.subscriptions')
       end
     end
   end
@@ -29,7 +28,7 @@ feature 'Authenticated user can subscribe to a question' do
 
     scenario 'is able to unsubscribe from a question', js: true do
       sign_in_user(user)
-      user.subscriptions << question
+      user.subscribed_questions << question
       visit question_path(question)
       within(".subscriptions") do
         click_on 'Unsubscribe'

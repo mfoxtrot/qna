@@ -39,10 +39,10 @@ $ ->
 
     if (response.subscription_exists)
       link_label = 'Unsubscribe'
-      $('.subscription_link').html('<a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="' + response.link + '">' + link_label + '</a>');
+      $('.subscription_link').html('<a data-type="json" data-remote="true" rel="nofollow" data-method="delete" href="' + response.link + '">' + link_label + '</a>');
     else
       link_label = 'Subscribe'
-      $('.subscription_link').html('<a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="' + response.link + '">' + link_label + '</a>');
+      $('.subscription_link').html('<a data-type="json" data-remote="true" rel="nofollow" data-method="post" href="' + response.link + '">' + link_label + '</a>');
 
   App.cable.subscriptions.create('QuestionsChannel', {
     connected: ->

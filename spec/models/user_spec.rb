@@ -4,7 +4,8 @@ RSpec.describe User do
   describe 'Associations' do
     it { should have_many(:questions).dependent(:destroy) }
     it { should have_many(:answers).dependent(:destroy) }
-    it { should have_and_belong_to_many(:subscriptions) }
+    it { should have_many(:subscriptions) }
+    it { should have_many(:subscribed_questions)}
   end
 
   describe 'Validations' do
@@ -75,6 +76,25 @@ RSpec.describe User do
           expect(authoriztion.uid).to eq auth.uid
         end
       end
+    end
+  end
+
+  describe '#subscribed_to?' do
+    let!(:user) { create(:user) }
+    let!(:subscription) { create(:subscription, user: user)}
+
+    it '#subscribed_to?' do
+      expect(user).to be_subscribed_to(subscription.question)
+    end
+  end
+
+  describe '#find_subscription_by_question' do
+    let!(:user) { create(:user)}
+    let!(:question) { create(:question)}
+    let!(:subscription) { create(:subscription, user: user, question: question)}
+
+    it 'return subscription by question' do
+      expect(user.find_subscription_by_question(question)).to eq(subscription)
     end
   end
 end

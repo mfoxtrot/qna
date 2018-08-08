@@ -5,7 +5,8 @@ class Question < ApplicationRecord
   has_many :answers, dependent: :destroy
   belongs_to :author, class_name: 'User'
   has_many :attachments, as: :attachable, dependent: :destroy
-  has_and_belongs_to_many :subscribers, class_name: "User"
+  has_many :subscriptions
+  has_many :subscribers, through: :subscriptions, source: :user
 
   validates :title, :body, presence: true
 
@@ -23,7 +24,7 @@ class Question < ApplicationRecord
   private
 
   def add_subscription_for_author
-    author.subscriptions << self
+    author.subscribed_questions << self
   end
 
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180806205505) do
+ActiveRecord::Schema.define(version: 20180807155811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,10 +108,10 @@ ActiveRecord::Schema.define(version: 20180806205505) do
     t.index ["author_id"], name: "index_questions_on_author_id"
   end
 
-  create_table "questions_users", id: false, force: :cascade do |t|
+  create_table "subscriptions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "question_id", null: false
-    t.index ["user_id", "question_id"], name: "index_questions_users_on_user_id_and_question_id", unique: true
+    t.index ["user_id", "question_id"], name: "index_subscriptions_on_user_id_and_question_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|

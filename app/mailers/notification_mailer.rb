@@ -7,7 +7,8 @@ class NotificationMailer < ApplicationMailer
   #
   def new_answer(answer, user)
     @greeting = "Hi"
-
+    @user = user
+    @answer = answer
     mail to: user.email
   end
 end
