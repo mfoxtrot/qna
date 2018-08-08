@@ -39,24 +39,6 @@ class QuestionsController < ApplicationController
     respond_with @question
   end
 
-  def subscribe
-    current_user.subscriptions << @question unless current_user.subscriptions.exists?(@question.id)
-    respond_to do |format|
-      format.json {
-        render json: { message: "You have successfully subscribed to the question", subscription_exists: true, link: unsubscribe_question_path(@question) }
-      }
-    end
-  end
-
-  def unsubscribe
-    current_user.subscriptions.delete(@question) if current_user.subscriptions.exists?(@question.id)
-    respond_to do |format|
-      format.json {
-        render json: {message: "You have successfully unsubscribed from the question", subscription_exists: false, link: subscribe_question_path(@question) }
-      }
-    end
-  end
-
   private
 
   def question_params
