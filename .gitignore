@@ -25,3 +25,6 @@ config/database.yml
 
 # Ignore IDE temp files
 /.idea
+
+# Ignore sphinx index files
+/db/sphinx
