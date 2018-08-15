@@ -1,3 +1,7 @@
+h1 search
+= form_tag(search_find_path) do
+  = text_field_tag(:search_field)
+  = submit_tag 'find'
 h1 Questions list
 = content_tag(:div, '', class: 'questions', data: {user_id: signed_in? ? current_user.id : 0 } )
   - @questions.each do |question|

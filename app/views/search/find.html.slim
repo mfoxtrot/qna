@@ -1,0 +1,20 @@
+h1 Search results
+.search_results
+  .result
+    = "#{pluralize(@count_results, 'item')} found"
+  .items
+    div
+      h3 Questions:
+      - @result[:questions].each do |item|
+        p= link_to item.title, question_path(item), target: '_blank'
+      h3 Answers:
+      - @result[:answers].each do |item|
+        p= link_to item.body, question_path(item.question), target: '_blank'
+
+      h3 Comments:
+      - @result[:comments].each do |item|
+        p= link_to item.body, polymorphic_url(item.commentable), target: '_blank'
+
+      h3 Users:
+      - @result[:users].each do |item|
+        = item.email

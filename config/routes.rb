@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
+
   use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks', registrations: 'users/registrations' }
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   root to: 'questions#index'
+  post 'search/find'
 
   concern :votable do
     member do

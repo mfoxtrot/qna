@@ -28,3 +28,4 @@ config/database.yml
 
 # Ignore sphinx index files
 /db/sphinx
+/config/*sphinx.conf
