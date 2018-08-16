@@ -2,7 +2,7 @@ require 'features_helper'
 #require 'sphinx_helper'
 
 feature 'user is able to search' do
-  describe 'Any user can type a string in a search form and get the result' do
+  describe 'Any user can type a string in a search form at the main page and get the result' do
 
     it 'if type result string and click find' do
       visit root_path
@@ -50,7 +50,7 @@ feature 'user is able to search' do
         end
       end
     end
-  #
+
     context 'search results include comments' do
       let!(:question) { create(:question)}
       let!(:comment) { create(:question_comment, commentable: question, body: 'This is a new comment')}
@@ -69,5 +69,30 @@ feature 'user is able to search' do
         end
       end
     end
+  end
+
+  describe 'Any user can search from the search page' do
+    context 'search questions' do
+      let!(:question) {create(:question, title: 'How much is the fish?')}
+      let!(:another_question) { create(:question)}
+      it 'returns found question' do
+        index
+        visit search_find_path
+        fill_in 'search_field', with: 'fish'
+        within('.search_params') do
+          find('#questions').set(true)
+        end
+        click_on('find')
+
+        within('.search_results .result') do
+          expect(page).to have_content('1 item found')
+        end
+
+        within('.search_results .items') do
+          expect(page).to have_content(question.title)
+        end
+      end
+    end
+
   end
 end
