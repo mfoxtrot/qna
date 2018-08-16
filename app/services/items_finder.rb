@@ -1,4 +1,4 @@
-class FindItems
+class ItemsFinder < ApplicationServices
 
   def initialize(search_area, search_string)
     @search_area = search_area
