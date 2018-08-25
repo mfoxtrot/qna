@@ -10,6 +10,6 @@ class DailyMailer < ApplicationMailer
     date = Date.yesterday
     @questions = Question.where(created_at: date.midnight..date.end_of_day).includes(:author)
 
-    mail to: user.email
+    mail to: user.email, subject: 'Daily digest'
   end
 end

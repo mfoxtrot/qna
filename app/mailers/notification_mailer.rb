@@ -9,6 +9,6 @@ class NotificationMailer < ApplicationMailer
     @greeting = "Hi"
     @user = user
     @answer = answer
-    mail to: user.email
+    mail to: user.email, subject: 'New answer'
   end
 end
