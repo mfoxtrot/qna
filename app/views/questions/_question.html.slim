@@ -1,5 +1,5 @@
 div
-  h3= question.title
+  h3= link_to question.title, question_path(question)
   p= question.body
     - if user_can_edit_question
     = link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
