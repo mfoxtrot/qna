@@ -257,7 +257,7 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   config.omniauth :github, Rails.application.secrets.github_app_id, Rails.application.secrets.github_app_secret, scope: 'user'
-  config.omniauth :meetup, Rails.application.secrets.meetup_key, Rails.application.secrets.meetup_secret, callback_url: 'http://localhost:3000/users/auth/meetup/callback'
+  config.omniauth :meetup, Rails.application.secrets.meetup_key, Rails.application.secrets.meetup_secret
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
