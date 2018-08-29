@@ -1,26 +1,27 @@
 - if answer.persisted?
-  = content_tag(:li, id: "answer-#{answer.id}", data: {answer_id: answer.id})
-    p= answer.body
-    .answer_vote
-      = render 'votes/vote', vote: answer.vote_by_user(current_user), resource: answer
-    p Attachments
-    ul
-      = render answer.attachments
+  - cache answer do
+    = content_tag(:li, id: "answer-#{answer.id}", data: {answer_id: answer.id})
+      p= answer.body
+      .answer_vote
+        = render 'votes/vote', vote: answer.vote_by_user(current_user), resource: answer
+      p Attachments
+      ul
+        = render answer.attachments
 
-    p Comments
-    = content_tag :div, class: 'answer_comments', data: {id: answer.id}
-      = render 'comments/comments_list', resource: answer
+      p Comments
+      = content_tag :div, class: 'answer_comments', data: {id: answer.id}
+        = render 'comments/comments_list', resource: answer
 
-    - if answer.best?
-      p The best answer
-    - if can?(:set_as_the_best, answer) && !answer.best?
-      = link_to 'Mark as the best', set_as_the_best_answer_path(answer), method: :post, remote: true
-    - if can?(:destroy, answer)
-      = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
-    - if can?(:edit, answer)
-      = link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
-      = content_tag :p, class: 'edit_answer'
-        = form_with(model: answer, remote: true, html: { id: "edit-answer-#{answer.id}", class: 'edit-answer' }) do |f|
-          = f.label :body, 'Answer'
-          = f.text_area :body
-          = f.submit 'Save'
+      - if answer.best?
+        p The best answer
+      - if can?(:set_as_the_best, answer) && !answer.best?
+        = link_to 'Mark as the best', set_as_the_best_answer_path(answer), method: :post, remote: true
+      - if can?(:destroy, answer)
+        = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
+      - if can?(:edit, answer)
+        = link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+        = content_tag :p, class: 'edit_answer'
+          = form_with(model: answer, remote: true, html: { id: "edit-answer-#{answer.id}", class: 'edit-answer' }) do |f|
+            = f.label :body, 'Answer'
+            = f.text_area :body
+            = f.submit 'Save'

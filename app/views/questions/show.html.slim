@@ -4,22 +4,23 @@
 - if can?(:destroy, @question)
   = link_to 'Delete question', question_path(@question), method: :delete
 
-p= @question.body
+- cache @question do
+  p= @question.body
 
-.question_vote
-  = render 'votes/vote', vote: @question.vote_by_user(current_user), resource: @question
-p Attachments
-.attachments
-  ul
-    = render @question.attachments
+  .question_vote
+    = render 'votes/vote', vote: @question.vote_by_user(current_user), resource: @question
+  p Attachments
+  .attachments
+    ul
+      = render @question.attachments
 
-p Comments
-.question_comments
-  = render 'comments/comments_list', resource: @question
+  p Comments
+  .question_comments
+    = render 'comments/comments_list', resource: @question
 
-.answers
-  = content_tag :ol, class: 'answers_list'
-    = render @question.answers
+  .answers
+    = content_tag :ol, class: 'answers_list'
+      = render @question.answers
 br
 = form_with(model: [@question, @answer], remote:true ) do |f|
   = render 'shared/errors', resource: @answer
