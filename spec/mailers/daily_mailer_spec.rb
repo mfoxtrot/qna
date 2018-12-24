@@ -6,9 +6,9 @@ RSpec.describe DailyMailer, type: :mailer do
     let(:mail) { DailyMailer.digest(user) }
 
     it "renders the headers" do
-      expect(mail.subject).to eq("Digest")
+      expect(mail.subject).to eq("Daily digest")
       expect(mail.to).to eq([user.email])
-      expect(mail.from).to eq(["from@example.com"])
+      expect(mail.from).to eq(["notification@example.com"])
     end
 
     it "renders the body" do
