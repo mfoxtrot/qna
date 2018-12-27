@@ -11,7 +11,9 @@ feature 'User can be authorized via Meetup' do
       mock_auth_hash
       click_on 'Sign in with Meetup'
       fill_in 'Email', with: 'abc111@mail.ru'
-      click_on 'Sign up'
+      within('.actions') do
+        click_on 'Sign up'
+      end
       expect(page).to have_content('A message with a confirmation link has been sent to your email address. Please follow the link to activate your account. A message with a confirmation link has been sent to your email address. Please follow the link to activate your account.')
       visit new_user_session_path
       click_on 'Sign in with Meetup'

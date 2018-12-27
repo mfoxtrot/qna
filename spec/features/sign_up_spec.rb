@@ -12,14 +12,18 @@ feature 'User can sign up', %q{
     password = Faker::Internet.unique.password
     fill_in 'user_password', with: password
     fill_in 'user_password_confirmation', with: password
-    click_on 'Sign up'
+    within('.actions') do
+      click_on 'Sign up'
+    end
     open_email(email)
     current_email.click_link 'Confirm my account'
 
     visit user_session_path
     fill_in 'user_email', with: email
     fill_in 'user_password', with: password
-    click_on 'Log in'
+    within('.actions') do
+      click_on 'Log in'
+    end
     expect(page).to have_content 'Signed in successfully'
 
   end
