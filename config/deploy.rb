@@ -4,6 +4,8 @@ lock "~> 3.11.0"
 set :application, 'qna'
 set :repo_url, 'git@github.com:mfoxtrot/qna.git'
 
+set :ssh_options, { config: false }
+
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, "/home/deployer/qna"
 set :deploy_user, 'deployer'
